@@ -1,1 +1,2 @@
 django_home: /home/ubuntu/game-chat
+rds_db_instance: game-chat-db
