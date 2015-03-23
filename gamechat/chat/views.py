@@ -27,5 +27,5 @@ def chat_add(request, chat_room_id):
 
 
 def chat_messages(request, chat_room_id):
-    chat_room = ChatRoom.objects.filter(pk=chat_room_id)
+    chat_room = ChatRoom.objects.get(pk=chat_room_id)
     return JsonResponse({'messages': chat_room.backlog()})
