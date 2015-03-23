@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from chat.models import ChatRoom
+import time
 
 
 def index(request):
@@ -23,12 +24,19 @@ def chat_room(request, chat_room_id):
 
 @csrf_exempt
 def chat_add(request, chat_room_id):
-    message = request.get('message')
+    # print "this is a test"
+    # import pdb; pdb.set_trace()
+    message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     chat_room.add(message)
+    return JsonResponse({'message': message})
 
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
-    return JsonResponse({'messages': chat_room.backlog()})
+    data = {
+        'messages': chat_room.messages[-1],
+    }
+    time.sleep(5)
+    return JsonResponse(data)
