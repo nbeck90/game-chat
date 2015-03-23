@@ -65,7 +65,7 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # }
 DATABASES = {
     'default': dj_database_url.config(
-        default='postgres://postgres:@localhost:5432/game_chat'
+        default='postgres://postgres:@localhost:5432/game_chat_db'
         )
 }
 # Internationalization
