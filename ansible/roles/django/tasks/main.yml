@@ -37,17 +37,15 @@
 - name: Run Migrations
   environment:
     DATABASE_URL: "{{ db_url }}"
-    DJANGO_CONFIGURATION: Prod
   django_manage:
-    app_path: "{{ django_home }}/imager/"
-    settings: imager.settings
+    app_path: "{{ django_home }}/gamechat/"
+    settings: gamechat.settings
     command: migrate
 
-- name: Collect Static Files
-  environment:
-    DATABASE_URL: "{{ db_url }}"
-    DJANGO_CONFIGURATION: Prod
-  django_manage:
-    app_path: "{{ django_home }}/imager/"
-    settings: imager.settings
-    command: collectstatic
+# - name: Collect Static Files
+#   environment:
+#     DATABASE_URL: "{{ db_url }}"
+#   django_manage:
+#     app_path: "{{ django_home }}/gamechat/"
+#     settings: gamechat.settings
+#     command: collectstatic

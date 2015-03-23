@@ -6,8 +6,8 @@
 
 - name: Create gunicorn Upstart Job
   sudo: yes
-  template: src=imagerapp.conf dest=/etc/init/imagerapp.conf
+  template: src=gamechat.conf dest=/etc/init/gamechat.conf
 
 - name: Start gunicorn Upstart Job
   sudo: yes
-  service: name=imagerapp state=restarted
+  service: name=gamechat state=restarted
