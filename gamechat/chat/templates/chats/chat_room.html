@@ -11,7 +11,7 @@
                 var message = $("#messageinput").val();
                 $.ajax({
                     'type'     : 'POST',
-                    'url'      : 'add/1',
+                    'url'      : '/chats/add/1/',
                     'data'     : { 'message': message },
                     'dataType' : 'json',
                 });
@@ -22,7 +22,7 @@
             var longPoll = function() {
               return $.ajax({
                 type: "POST",
-                url: "show/1",
+                url: "/chats/show/1/",
                 async: true,
                 cache: false,
                 timeout: 100000,
