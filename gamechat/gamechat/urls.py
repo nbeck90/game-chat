@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^(/)?$', RedirectView.as_view(url='/chats/')),
     url(r'^chats/', include('chat.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^calendar/', include('game_calendar.urls')),
 )
