@@ -7,6 +7,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
+
+
             $('#newmessage').submit(function(e) {
                 var message = $("#messageinput").val();
                 $.ajax({
@@ -19,6 +21,8 @@
                 $("#messageinput").focus();
                 e.preventDefault();
             });
+
+
             var longPoll = function() {
               return $.ajax({
                 type: "POST",
@@ -27,8 +31,9 @@
                 cache: false,
                 timeout: 100000,
                 success: function(data) {
-                  if (data.length > 0) {
-                      $("#messages").append($("<li>" + data + "</li>"))
+                    console.log(data)
+                  if (data.messages.length > 0) {
+                      $("#messages").append($("<li>" + data.messages + "</li>"))
                   }
                   return longPoll();
                 },
