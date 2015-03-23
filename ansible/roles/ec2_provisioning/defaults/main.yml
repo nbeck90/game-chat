@@ -2,10 +2,10 @@ keypair: nbeck
 security_group: vpc-ssh-access
 instance_type: t1.micro
 ami: ami-810a2fb1
-vpc_subnet_id: subnet-30812047
+vpc_subnet_id: subnet-78b93a1d
 region: us-west-2
-instance_tags: {"Name": "ansible-built"}
+instance_tags: {"Name": "game chat"}
 root_ebs_size: 8
-zone: us-west-2b
+zone: us-west-2a
 instance_profile_name:
 num_instances: 1
