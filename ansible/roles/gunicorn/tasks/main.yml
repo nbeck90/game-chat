@@ -1,0 +1,13 @@
+---
+
+- name: Install Requirements
+  sudo: yes
+  pip: name=gunicorn state=present
+
+- name: Create gunicorn Upstart Job
+  sudo: yes
+  template: src=imagerapp.conf dest=/etc/init/imagerapp.conf
+
+- name: Start gunicorn Upstart Job
+  sudo: yes
+  service: name=imagerapp state=restarted
