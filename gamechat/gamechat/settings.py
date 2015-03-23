@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'profiles',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,17 +58,18 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.path.join(BASE_DIR, 'db.postgresql'),
-#     }
-# }
 DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://postgres:@localhost:5432/game_chat_db'
-        )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'game_chat_db',
+        'USER': os.environ.get('USER'),
+    }
 }
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://postgres:@localhost:5432/game_chat_db'
+#         )
+# }
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
