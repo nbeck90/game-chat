@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.views.generic.dates import YearArchiveView
 
+from game_calendar.models import Article
 
-
-# Create your views here.
-
-def calendar(request):
-    return render(request, 'game_calendar/calendar.html', {'calendar': "hello!"})
+class ArticleYearArchiveView(YearArchiveView):
+    queryset = Article.objects.all()
+    date_field = "pub_date"
+    make_object_list = True
+    allow_future = True
