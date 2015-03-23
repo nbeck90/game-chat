@@ -1,3 +1,6 @@
+dj-database-url==0.3.0
+Django==1.7.7
+psycopg2==2.6
 boto==2.36.0
 ecdsa==0.13
 Jinja2==2.7.3
