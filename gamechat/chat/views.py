@@ -39,8 +39,8 @@ def chat_add(request, chat_room_id):
     message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     for prof in QUEUES:
-        QUEUES[prof].put_nowait(message)
-        print "add" + prof
+        msg = "{}:    {}".format(request.user.username, message)
+        QUEUES[prof].put_nowait(msg)
 
     return JsonResponse({'message': message})
 
@@ -52,7 +52,6 @@ def chat_messages(request, chat_room_id):
         q = QUEUES[request.user.username]
         print request.user.username
         msg = q.get(timeout=10)
-        msg = "{}:    {}".format(request.user.username, msg)
     except queue.Empty:
         msg = []
 
