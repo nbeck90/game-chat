@@ -97,7 +97,7 @@ STATICFILES_DIRS = [
 ]
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'gamechat/templates'),
+    os.path.join(BASE_DIR, 'gamechat/gamechat/templates'),
     os.path.join(BASE_DIR, 'profiles/templates'),
     os.path.join(BASE_DIR, 'chats/templates'),
     os.path.join(BASE_DIR, 'game_calendar/templates'),
