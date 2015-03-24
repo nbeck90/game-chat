@@ -10,4 +10,6 @@ urlpatterns = patterns('',
                    name='chat_room'),
                url(r'^show/(?P<chat_room_id>\d+)/$', views.chat_messages,
                    name='chat_room'),
+               url(r'^create/room/$', views.create_room,
+                   name='chat_room'),
 )

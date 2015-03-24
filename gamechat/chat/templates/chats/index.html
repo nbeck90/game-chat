@@ -1,3 +1,4 @@
+<h1>Avaliable Chat Rooms</h1>
 {% if chat_list %}
 <ul>
     <ul>{% for chat in chat_list %}</ul>
@@ -10,7 +11,10 @@
 </ul>
 
 <ul>{% endfor %}</ul>
-
+<form action="create/room/" method="post">
+  <input name="Enter a New Room Name"></input>
+  <button>Create a Room</button>
+</form>
 {% else %}
     No chats are available.
 {% endif %}
