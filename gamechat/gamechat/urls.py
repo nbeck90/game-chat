@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^calendar/', include('game_calendar.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
+    url(r'^accounts/profile', RedirectView.as_view(url='/profile/')),
 )
