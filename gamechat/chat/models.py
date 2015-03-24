@@ -11,6 +11,8 @@ class ChatRoom(models.Model):
     # queue = queue.Queue()
     subscribers = models.ManyToManyField(Profile,
                                          related_name='subs')
+    owner = models.OneToOneField(Profile, related_name='chat_room',
+                                    blank=True, null=True)
 
     def __unicode__(self):
         return self.name
@@ -21,5 +23,3 @@ class ChatRoom(models.Model):
 
     def add_subscriber(self, profile):
         self.subscribers.add(profile)
-
-
