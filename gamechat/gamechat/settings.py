@@ -37,6 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'chat',
+    'game_calendar',
+    'profiles',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -60,7 +63,8 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.path.join(BASE_DIR, 'db.postgresql'),
+#         'NAME': 'game_chat_db',
+#         'USER': os.environ.get('USER'),
 #     }
 # }
 DATABASES = {
@@ -86,3 +90,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+    )
+
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+    )
