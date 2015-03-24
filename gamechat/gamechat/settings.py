@@ -60,15 +60,15 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'game_chat_db',
-#         'USER': os.environ.get('USER'),
-#     }
-# }
-SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
-DATABASES = {'default': dj_database_url.config()}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'game_chat_db',
+        'USER': os.environ.get('USER'),
+    }
+}
+# SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
+# DATABASES = {'default': dj_database_url.config()}
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
