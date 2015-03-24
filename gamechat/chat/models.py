@@ -12,7 +12,6 @@ class ChatRoom(models.Model):
     subscribers = models.ManyToManyField(Profile,
                                          related_name='subs')
 
-
     def __unicode__(self):
         return self.name
 
@@ -22,4 +21,5 @@ class ChatRoom(models.Model):
 
     def add_subscriber(self, profile):
         self.subscribers.add(profile)
+
 

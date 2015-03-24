@@ -6,7 +6,7 @@ from chat.models import ChatRoom
 from gevent import queue
 
 
-QUEUES = {'generic': queue.Queue(), }
+QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
 
 
 def index(request):
@@ -17,41 +17,50 @@ def index(request):
     return render(request, 'chat/index.html', context)
 
 
+@csrf_exempt
+def create_room(request):
+    name = request.POST.get('Enter a New Room Name')
+    new_room = ChatRoom()
+    new_room.name = name
+    new_room.save()
+    QUEUES[name] = {}
+    return chat_room(request, new_room.pk)
+
+
 def chat_room(request, chat_room_id):
-    chatid = get_object_or_404(ChatRoom, pk=chat_room_id)
+    chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
     room = ChatRoom.objects.get(pk=chat_room_id)
     context = {
-        'chatroom': chatid,
-        'subs': room.subscribers.all()
+        'chatroom': chatroom,
+        'subs': room.subscribers.all(),
+        'rooms': room.name,
+        'queues': QUEUES,
     }
-    print room.subscribers.all()
     if request.user.profile:
         room.add_subscriber(request.user.profile)
-        QUEUES[request.user.username] = queue.Queue()
+        QUEUES[chatroom.name][request.user.username] = queue.Queue()
 
-    return render(request, 'chats/chat_room.html', context)
+    return render(request, 'chat/chat_room.html', context)
 
 
 @csrf_exempt
 def chat_add(request, chat_room_id):
-    # print "this is a test"
-    # import pdb; pdb.set_trace()
     message = request.POST.get('message')
-    chat_room = ChatRoom.objects.get(pk=chat_room_id)
-    for prof in QUEUES:
+    chat_room = ChatRoom.objects.get(pk=chat_room_id).name
+    for prof in QUEUES[chat_room]:
         msg = "{}:    {}".format(request.user.username, message)
-        QUEUES[prof].put_nowait(msg)
+        QUEUES[chat_room][prof].put_nowait(msg)
 
     return JsonResponse({'message': message})
 
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
-    # chat_room = ChatRoom.objects.get(pk=chat_room_id)
+    chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
-        q = QUEUES[request.user.username]
+        q = QUEUES[chat_room][request.user.username]
         print request.user.username
-        msg = q.get(timeout=10)
+        msg = q.get(timeout=1)
     except queue.Empty:
         msg = []
 
