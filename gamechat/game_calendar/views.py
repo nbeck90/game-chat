@@ -12,6 +12,14 @@ class ArticleYearArchiveView(YearArchiveView):
     allow_future = True
 
 
+def event_detail(request, pk):
+
+    article = Article.objects.get(pk=pk)
+    return render(request,
+                  'game_calendar/detail.html',
+                  {'article': article}
+                  )
+
 def calendar(request, month, year):
     from calendar import HTMLCalendar
     from django.utils.safestring import mark_safe
@@ -39,7 +47,11 @@ def calendar(request, month, year):
                     body = ['<ul>']
                     cssclass += ' filled'
                     for event in events:
+                        pk = str(event.pk)
+                        print pk
+                        body.append('<a href="/calendar/event_detail/'+pk+'/">')
                         body.append('<li>'+event.title+'</li>')
+                        body.append('</a>')
                     body.append('</ul>')
                     return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
 

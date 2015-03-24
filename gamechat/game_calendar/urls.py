@@ -10,4 +10,5 @@ urlpatterns = patterns('',
             ),
         name="article_year_archive"),
     url(r'^(?P<month>\d{2})/(?P<year>\d{4})/$', views.calendar, name='calendar_view'),
+    url(r'^event_detail/(?P<pk>\d+)/$', views.event_detail, name='event_detail')
 )
