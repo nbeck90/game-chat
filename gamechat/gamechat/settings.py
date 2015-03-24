@@ -27,6 +27,9 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -40,6 +43,7 @@ INSTALLED_APPS = (
     'chat',
     'game_calendar',
     'profiles',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -67,12 +71,14 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 #         'USER': os.environ.get('USER'),
 #     }
 # }
+
 SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
 DATABASES = {
     'default': dj_database_url.config(
         default='postgres://postgres:@localhost:5432/game_chat_db'
     )
 }
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 

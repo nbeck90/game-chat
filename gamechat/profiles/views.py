@@ -6,11 +6,15 @@ from django.core.urlresolvers import reverse_lazy
 from forms import ProfileForm
 
 
-def profile(request):
-    profile = request.user.profile
-    friends = profile.get_friends()
-    context = {'profile': profile,
-               'friends': friends}
+def profile(request, slug):
+    context = {}
+    try:
+        profile = Profile.objects.get(slug=slug)
+        context['profile'] = profile
+        context['friends'] = profile.get_friends()
+    except Profile.DoesNotExist:
+        pass
+
     return render(request, 'profiles/profile.html', context)
 
 

@@ -35,7 +35,7 @@ NAV/FOOTER
 
 nav {
     display: block;
-    background-color:rgba(200, 200, 200, 0.5);
+    background-color:rgba(220, 220, 220, 0.3);
     width: 100%;
     height: 50px;
     margin: 0;
@@ -50,7 +50,7 @@ nav {
     text-shadow: 4px 4px 10px #222;
     text-decoration: none;
     font-family: 'Lato', sans-serif;
-    font-weight: 300;
+    font-weight: 600;
     color: #99bbff;
     margin-left: 15px;
     margin-right: 15px;
