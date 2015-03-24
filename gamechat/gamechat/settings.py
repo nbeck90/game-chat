@@ -73,6 +73,7 @@ DATABASES = {
         default='postgres://postgres:@localhost:5432/game_chat_db'
     )
 }
+
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 

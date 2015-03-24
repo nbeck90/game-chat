@@ -29,7 +29,7 @@
                 url: "/chat/show/1/",
                 async: true,
                 cache: false,
-                timeout: 100000,
+                timeout: 1000000,
                 success: function(data) {
                     console.log(data)
                   if (data.messages.length > 0) {
@@ -57,5 +57,8 @@
         <input type="submit"/>
     </form>
 </button>
+{% for sub in subs %}
+<p>{{sub}}</p>
+{% endfor %}
 </body>
 </html>
