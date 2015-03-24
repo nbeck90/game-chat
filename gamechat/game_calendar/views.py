@@ -30,9 +30,7 @@ def calendar(request, month, year):
         def formatday(self, day, weekday):
 
             if day != 0:
-                print day
                 cssclass = self.cssclasses[weekday]
-                print cssclass
                 if date.today() == date(self.year, self.month, day):
                     cssclass += ' today'
                 events = self.articles.filter(
@@ -51,9 +49,22 @@ def calendar(request, month, year):
         def day_cell(self, cssclass, body):
             return '<td class="%s">%s</td>' % (cssclass, body)
 
+    year, month = int(year), int(month)
+    calendars = [mark_safe(SpecialCal().formatmonth(year, month))]
+    for i in range(1, 6):
+        month += 1
+        if month > 12:
+            year += 1
+            month = 1
+        calendars.append(mark_safe(SpecialCal().formatmonth(year, month)))
+
+    from datetime import date, datetime, time, timedelta
+
+    dt = datetime.combine(date.today(), time(23, 55)) + timedelta(minutes=30)
+
+
     return render(request,
                   'game_calendar/calendar.html',
-                  {'calendar': mark_safe(SpecialCal().formatmonth(
-                                         int(year), int(month))),
+                  {'calendars': calendars,
                    'articles': Article.objects.all()}
                   )
