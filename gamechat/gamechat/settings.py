@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'chat',
     'game_calendar',
+    'profiles',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -62,7 +63,8 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.path.join(BASE_DIR, 'db.postgresql'),
+#         'NAME': 'game_chat_db',
+#         'USER': os.environ.get('USER'),
 #     }
 # }
 DATABASES = {
