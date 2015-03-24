@@ -9,4 +9,5 @@ urlpatterns = patterns('',
             template_name="game_calendar/article_archive_year.html"
             ),
         name="article_year_archive"),
+    url(r'^(?P<month>\d{2})/(?P<year>\d{4})/$', views.calendar, name='calendar_view'),
 )
