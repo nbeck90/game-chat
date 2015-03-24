@@ -27,6 +27,9 @@ TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_AUTO_LOGIN = True
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Application definition
 
@@ -40,6 +43,7 @@ INSTALLED_APPS = (
     'chat',
     'game_calendar',
     'profiles',
+    'registration',
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,9 +1,11 @@
+boto==2.36.0
 dj-database-url==0.3.0
 Django==1.7.7
-psycopg2==2.6
-boto==2.36.0
+django-registration-redux==1.1
 ecdsa==0.13
 Jinja2==2.7.3
+MarkupSafe==0.23
 paramiko==1.15.2
+psycopg2==2.6
 pycrypto==2.6.1
 PyYAML==3.11
