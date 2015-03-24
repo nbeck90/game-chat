@@ -6,7 +6,15 @@ from django.core.urlresolvers import reverse_lazy
 from forms import ProfileForm
 
 
-def profile(request, slug):
+def profile(request):
+    profile = request.user.profile
+    context = {
+        'profile': profile
+    }
+    return render(request, 'profiles/profile.html', context)    
+
+
+def other_profile(request, slug):
     context = {}
     try:
         profile = Profile.objects.get(slug=slug)
@@ -15,7 +23,7 @@ def profile(request, slug):
     except Profile.DoesNotExist:
         pass
 
-    return render(request, 'profiles/profile.html', context)
+    return render(request, 'profiles/other_profile.html', context)
 
 
 class ProfileEdit(UpdateView):
