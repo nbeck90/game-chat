@@ -42,10 +42,10 @@
     settings: gamechat.settings
     command: migrate
 
-# - name: Collect Static Files
-#   environment:
-#     DATABASE_URL: "{{ db_url }}"
-#   django_manage:
-#     app_path: "{{ django_home }}/gamechat/"
-#     settings: gamechat.settings
-#     command: collectstatic
+- name: Collect Static Files
+  environment:
+    DATABASE_URL: "{{ db_url }}"
+  django_manage:
+    app_path: "{{ django_home }}/gamechat/"
+    settings: gamechat.settings
+    command: collectstatic
