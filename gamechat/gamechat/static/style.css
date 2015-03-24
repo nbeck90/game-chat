@@ -1,0 +1,66 @@
+/***************
+GENERAL
+***************/
+
+body {
+    margin: 0;
+    height: 100%;
+    min-height: 100%;
+}
+
+html {
+    /*background-color: #99a;*/
+    background-image: url("grey.jpg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-repeat: repeat-x;
+    background-attachment: fixed;
+}
+
+a {
+    text-decoration: none;
+    color: #eee;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.25em;
+}
+
+li {
+    list-style-type: none;
+}
+
+/***************
+NAV/FOOTER
+***************/
+
+nav {
+    display: block;
+    background-color:rgba(220, 220, 220, 0.3);
+    width: 100%;
+    height: 50px;
+    margin: 0;
+}
+
+#navigation_bar {
+    display: table;
+    margin: 0 auto;
+}
+
+.nav_icon {
+    text-shadow: 4px 4px 10px #222;
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    color: #99bbff;
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-top: 5px;
+    display: inline-block;
+    font-size: 1.5em;
+}
+
+footer {
+    position:fixed;
+    bottom:0;
+    width: 100%;
+}

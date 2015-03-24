@@ -1,4 +1,6 @@
+{% extends 'base.html' %}
 {% load staticfiles %}
+{% block content %}
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -7,13 +9,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-
+            console.log({{chatroom.pk}})
 
             $('#newmessage').submit(function(e) {
                 var message = $("#messageinput").val();
                 $.ajax({
                     'type'     : 'POST',
-                    'url'      : '/chats/add/1/',
+                    'url'      : '/chat/add/{{chatroom.pk}}/',
                     'data'     : { 'message': message },
                     'dataType' : 'json',
                 });
@@ -26,12 +28,11 @@
             var longPoll = function() {
               return $.ajax({
                 type: "POST",
-                url: "/chats/show/1/",
+                url: "/chat/show/{{chatroom.pk}}/",
                 async: true,
                 cache: false,
                 timeout: 1000000,
                 success: function(data) {
-                    console.log(data)
                   if (data.messages.length > 0) {
                       $("#messages").append($("<li>" + data.messages + "</li>"))
                   }
@@ -46,6 +47,7 @@
 
 </head>
 <body>
+<h1>{{chatroom}}</h1>
     Messages:
     <ul id="messages">
         {% for message in messages %}
@@ -57,8 +59,15 @@
         <input type="submit"/>
     </form>
 </button>
+Subscribrs for this room
 {% for sub in subs %}
 <p>{{sub}}</p>
 {% endfor %}
+
+Chat Rooms
+{% for queue in queues %}
+<p>{{queue}}</p>
+{% endfor %}
 </body>
+{% endblock %}
 </html>
