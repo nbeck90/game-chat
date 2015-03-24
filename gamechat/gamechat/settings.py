@@ -60,6 +60,9 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
+# SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
+# DATABASES = {'default': dj_database_url.config()}
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -68,7 +71,11 @@ DATABASES = {
     }
 }
 # SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
-# DATABASES = {'default': dj_database_url.config()}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://postgres:@localhost:5432/game_chat_db'
+#     )
+# }
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
@@ -87,13 +94,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
-    )
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'gamechat/static')
+]
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-    )
+    os.path.join(BASE_DIR, 'gamechat/templates'),
+    os.path.join(BASE_DIR, 'profiles/templates'),
+    os.path.join(BASE_DIR, 'chat/templates'),
+    os.path.join(BASE_DIR, 'game_calendar/templates'),
+)

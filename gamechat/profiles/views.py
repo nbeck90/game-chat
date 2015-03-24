@@ -5,6 +5,7 @@ from django.views.generic import UpdateView
 from django.core.urlresolvers import reverse_lazy
 from forms import ProfileForm
 
+
 def profile(request, slug):
     context = {}
     try:

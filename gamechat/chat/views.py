@@ -11,7 +11,7 @@ def index(request):
     context = {
         'chat_list': chat_rooms,
     }
-    return render(request, 'chats/index.html', context)
+    return render(request, 'chat/index.html', context)
 
 
 def chat_room(request, chat_room_id):
@@ -19,7 +19,7 @@ def chat_room(request, chat_room_id):
     context = {
         'chatroom': chatid,
     }
-    return render(request, 'chats/chat_room.html', context)
+    return render(request, 'chat/chat_room.html', context)
 
 
 @csrf_exempt

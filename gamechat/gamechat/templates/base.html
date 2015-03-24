@@ -1,0 +1,42 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Imager!</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700,900' rel='stylesheet' type='text/css'>
+        <nav>
+            <!-- <h4 class='nav_icon'>Imager</h4> -->
+            <div id='navigation_bar'>
+                <a href="" class='nav_icon'>Home</a>
+                {% if user.is_authenticated %}
+                <a href="" class='nav_icon'>Profile</a>
+                <a href="" class='nav_icon'>Logout</a>
+                {% else %}
+                <a href="" class='nav_icon'>Login</a>
+                <a href="" class='nav_icon'>Register</a>
+                {% endif %}
+            </div>
+        </nav>
+        <!-- <hr> -->
+    </head>
+    <body>
+    {% block content %}
+    {% endblock %}
+    </body>
+    <footer>
+        <nav>
+            <!-- <h4 class='nav_icon'>Imager</h4> -->
+            <div id='navigation_bar'>
+                <a href="" class='nav_icon'>Facebook</a>
+                {% if user.is_authenticated %}
+                <a href="" class='nav_icon'>Profile</a>
+                <a href="" class='nav_icon'>Logout</a>
+                {% else %}
+                <a href="" class='nav_icon'>Twitter</a>
+                <a href="" class='nav_icon'>Test</a>
+                {% endif %}
+            </div>
+        </nav>
+    </footer>
+<html>
