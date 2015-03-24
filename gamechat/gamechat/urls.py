@@ -13,4 +13,5 @@ urlpatterns = patterns('',
     url(r'^', include('profiles.urls'), name='profile'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^calendar/', include('game_calendar.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 )

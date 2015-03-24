@@ -8,10 +8,10 @@
         <nav>
             <!-- <h4 class='nav_icon'>Imager</h4> -->
             <div id='navigation_bar'>
-                <a href="" class='nav_icon'>Home</a>
+                <a href="/" class='nav_icon'>Home</a>
                 {% if user.is_authenticated %}
-                <a href="" class='nav_icon'>Profile</a>
-                <a href="" class='nav_icon'>Logout</a>
+                <a href="/" class='nav_icon'>Profile</a>
+                <a href="{% url 'profile' %}" class='nav_icon'>Logout</a>
                 {% else %}
                 <a href="" class='nav_icon'>Login</a>
                 <a href="" class='nav_icon'>Register</a>
