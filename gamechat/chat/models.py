@@ -1,4 +1,6 @@
 from django.db import models
+from gevent import queue
+from profiles.models import Profile
 
 # Create your models here.
 
@@ -6,13 +8,18 @@ from django.db import models
 class ChatRoom(models.Model):
     name = models.CharField(max_length=200)
 
-    messages = ['test_models', ]
+    # queue = queue.Queue()
+    subscribers = models.ManyToManyField(Profile,
+                                         related_name='subs')
+
 
     def __unicode__(self):
         return self.name
 
     def backlog(self, size=25):
-        return self.messages[-size:]
+        pass
+        # return self.messages[-size:]
 
-    def add(self, message):
-        self.messages.append(message)
+    def add_subscriber(self, profile):
+        self.subscribers.add(profile)
+

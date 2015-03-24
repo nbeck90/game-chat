@@ -68,7 +68,11 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 #     }
 # }
 SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
-DATABASES = {'default': dj_database_url.config()}
+DATABASES = {
+   'default': dj_database_url.config(
+       default='postgres://postgres:@localhost:5432/game_chat_db'
+       )
+}
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
