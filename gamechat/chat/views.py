@@ -45,7 +45,6 @@ def index(request):
 
 
 @csrf_exempt
-@login_required
 def create_room(request):
     try:
         main = request.path.rsplit('/', 2)[-1]
@@ -66,7 +65,6 @@ def create_room(request):
 
 
 @csrf_exempt
-@login_required
 def chat_room(request, chat_room_id):
     room = ChatRoom.objects.get(pk=chat_room_id)
     sel_queue = dict_of_queus.get(room.main)
@@ -86,7 +84,6 @@ def chat_room(request, chat_room_id):
 
 
 @csrf_exempt
-@login_required
 def chat_add(request, chat_room_id):
     message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
@@ -101,7 +98,6 @@ def chat_add(request, chat_room_id):
 
 
 @csrf_exempt
-@login_required
 def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     chat_room_main = chat_room.main
@@ -122,7 +118,6 @@ def chat_messages(request, chat_room_id):
 
 
 @csrf_exempt
-@login_required
 def delete_chatroom(request, chat_room_id):
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
         channel = ChatRoom.objects.get(pk=chat_room_id).main
