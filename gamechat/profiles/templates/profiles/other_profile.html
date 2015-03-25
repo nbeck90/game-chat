@@ -11,8 +11,8 @@
 		<h1>{{ profile }} owns this chatroom:</h1>
 		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
 	{% endfor %}
-{% else %}
-	<a href="/profile/friend/{{profile.pk}}"><button>friend</button></a>
+{% elif user.profile not in user.profile.requested_friends %}
+	<a href="/profile/request_friend/{{profile.pk}}"><button>request friendship</button></a>
 {% endif %}
 {% if profile not in user.profile.blocking.all %}
 	<a href="/profile/block/{{profile.pk}}"><button>block</button></a>
