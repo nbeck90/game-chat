@@ -102,6 +102,9 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'gamechat/static')
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'gamechat/templates'),
     os.path.join(BASE_DIR, 'profiles/templates'),

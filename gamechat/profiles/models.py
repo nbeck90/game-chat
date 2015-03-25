@@ -13,7 +13,12 @@ class Profile(models.Model):
     blocking = models.ManyToManyField('Profile', symmetrical=False,
                                       related_name='_blocking', null=True,
                                       blank=True)
-    slug = models.CharField(max_length=30, unique=True, blank=True)
+    picture = models.ImageField(
+        upload_to='photos/', null=True, blank=True, default='photos/link.jpg')
+    slug = models.CharField(max_length=32, unique=True, blank=True)
+
+    Created_room = False
+    chat_room_name = models.CharField(max_length=64, unique=True, blank=True, null=True)
 
     def __str__(self):
         return self.user.username
@@ -40,3 +45,13 @@ class Profile(models.Model):
 
     def unblock(self, other_profile):
         return self.block.remove(other_profile)
+
+    def room_status(self, name=None):
+        if self.chat_room_name:
+            self.Created_room = True
+        else:
+            self.chat_room_name = name
+        return self.Created_room
+
+
+
