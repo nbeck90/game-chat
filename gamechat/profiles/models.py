@@ -15,6 +15,7 @@ class Profile(models.Model):
                                       blank=True)
     picture = models.ImageField(
         upload_to='photos/', null=True, blank=True, default='photos/link.jpg')
+    
     slug = models.CharField(max_length=32, unique=True, blank=True)
 
     Created_room = False
