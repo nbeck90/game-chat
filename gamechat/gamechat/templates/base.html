@@ -10,11 +10,11 @@
             <div id='navigation_bar'>
                 <a href="/" class='nav_icon'>Home</a>
                 {% if user.is_authenticated %}
-                <a href="/" class='nav_icon'>Profile</a>
-                <a href="{% url 'profile' %}" class='nav_icon'>Logout</a>
+                <a href="/profile" class='nav_icon'>Profile</a>
+                <a href="/accounts/logout" class='nav_icon'>Logout</a>
                 {% else %}
-                <a href="" class='nav_icon'>Login</a>
-                <a href="" class='nav_icon'>Register</a>
+                <a href="/accounts/login" class='nav_icon'>Login</a>
+                <a href="/accounts/register" class='nav_icon'>Register</a>
                 {% endif %}
             </div>
         </nav>
