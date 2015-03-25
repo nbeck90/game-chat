@@ -41,6 +41,7 @@ def add_friend(request, pk):
     prof = Profile.objects.get(pk=pk)
     request.user.profile.friends.add(prof)
     request.user.profile.requesting_friend.remove(prof)
+    prof.requested_friends.remove(prof)
     return redirect('/profile/'+prof.user.username)
 
 def block_asshole(request, pk):
