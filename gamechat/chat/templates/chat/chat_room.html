@@ -46,13 +46,12 @@
     </script>
 </head>
 <body>
-<h1>{{chatroom}}</h1>
+<h1 id='room_title'>{{chatroom}}</h1>
 <form id="newmessage"> {% csrf_token %}
         <input id="messageinput"></input>
 </form>
 <div id='chat_holder'>
     <div id='chat_window'>
-        Messages:
         <ul id="messages">
             {% for message in messages %}
             <li>{{message}}</li>
@@ -61,11 +60,12 @@
     </div>
     <div id='room_info'>
         </button>
-        Subscribrs for this room
+        Subscribrs for this room:
         {% for sub in subs %}
         <p>{{sub}}</p>
         {% endfor %}
-        Chat Rooms
+        <br>
+        Chat Rooms:
         {% for queue in queues %}
         <p>{{queue}}</p>
         {% endfor %}
