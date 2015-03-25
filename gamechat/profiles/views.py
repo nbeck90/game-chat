@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
 from forms import ProfileForm
+from chat.models import ChatRoom
 
 
 def profile(request):
@@ -20,8 +21,11 @@ def other_profile(request, slug):
         profile = Profile.objects.get(slug=slug)
         context['profile'] = profile
         context['friends'] = profile.get_friends()
+        context['active_chats'] = ChatRoom.objects.filter(subscribers=profile)
+        context['owned_chats'] = ChatRoom.objects.filter(owner=profile)
     except Profile.DoesNotExist:
         pass
+
 
     return render(request, 'profiles/other_profile.html', context)
 

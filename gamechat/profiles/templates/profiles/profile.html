@@ -3,16 +3,13 @@
 {% block content %}
 <h1> this is your profile </h1>
 <h1>{{ profile }}</h1>
-<<<<<<< HEAD
 <h2>{{ profile }}'s friends:</h2>
-{% for friends in profile.friends.all %}
-    <p>friend</p>
+{% for friend in profile.friends.all %}
+    <p>{{friend}}</p>
 {% endfor %}
 <h2>{{ profile }} is blocking:</h2>
 {% for blocked in profile.blocking.all %}
-    <p>blocked</p>
+    <p>{{blocked}}</p>
 {% endfor %}
-=======
 <img src="{{ profile.picture.url }}"  style="float:auto"/>
->>>>>>> 09f8286cb0c5c1b6a184fdb456437f1452ca00b1
 {% endblock %}
