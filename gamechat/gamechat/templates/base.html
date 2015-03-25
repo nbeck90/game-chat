@@ -12,7 +12,6 @@
                 {% if user.is_authenticated %}
                 <a href="/profile" class='nav_icon'>Profile</a>
                 <a href="/accounts/logout" class='nav_icon'>Logout</a>
-                <a href="/chat" class='nav_icon'>Chat</a>
                 {% else %}
                 <a href="/accounts/login" class='nav_icon'>Login</a>
                 <a href="/accounts/register" class='nav_icon'>Register</a>
@@ -27,10 +26,5 @@
     {% endblock %}
     </body>
     <footer>
-        <nav>
-            <!-- <h4 class='nav_icon'>Imager</h4> -->
-            <div id='navigation_bar'>
-            </div>
-        </nav>
     </footer>
 <html>
