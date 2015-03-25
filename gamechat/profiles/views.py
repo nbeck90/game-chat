@@ -17,6 +17,8 @@ def profile(request):
 
 def other_profile(request, slug):
     context = {}
+    if request.user.username == slug:
+        return redirect("/profile/")
     try:
         profile = Profile.objects.get(slug=slug)
         context['profile'] = profile
@@ -31,14 +33,24 @@ def other_profile(request, slug):
 
 
 def make_friends(request, pk):
-    request.user.profile.friends.add(Profile.objects.get(pk=pk))
+    request.user.profile.requested_friends.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
 
+
+def add_friend(request, pk):
+    prof = Profile.objects.get(pk=pk)
+    request.user.profile.friends.add(prof)
+    request.user.profile.requesting_friend.remove(prof)
+    return redirect('/profile/'+prof.user.username)
 
 def block_asshole(request, pk):
     request.user.profile.blocking.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
 
+def unblock_asshole(request, pk):
+    prof = Profile.objects.get(pk=pk)
+    request.user.profile.blocking.remove(prof)
+    return redirect('/profile/'+prof.user.username)
 
 class ProfileEdit(UpdateView):
     model = Profile

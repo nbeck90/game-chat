@@ -10,4 +10,8 @@ urlpatterns = patterns('profiles.views',
         name='profile_list'),
     url(r'^friend/(?P<pk>\d+)$', 'make_friends', name='profile_edit'),
     url(r'^block/(?P<pk>\d+)$', 'block_asshole', name='profile_edit'),
+    url(r'^request_friend/(?P<pk>\d+)$', 'make_friends', name='request_friend'),
+    url(r'^add_friend/(?P<pk>\d+)$', 'add_friend', name='add_friend'),
+    url(r'^block/(?P<pk>\d+)$', 'block_asshole', name='block_asshole'),
+    url(r'^unblock/(?P<pk>\d+)$', 'unblock_asshole', name='unblock_asshole'),
 )
