@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Avaliable Chat Rooms</h1>
+<h1>Avaliable Chat Rooms for {{ channel }}</h1>
 {% if chat_list %}
 <ul>
     <ul>{% for chat in chat_list %}</ul>
@@ -8,7 +8,7 @@
 
 <ul>
     <ul>
-    <li><a id="" href="{{ chat.pk }}">  {{chat.name}} </a></li>
+    <li><a id="" href="room/{{ chat.pk }}">  {{chat.name}} </a></li>
     </ul>
 </ul>
 
@@ -16,8 +16,8 @@
 {% else %}
     No chats are available.
 {% endif %}
-<form action="create/room/" method="post">
-  <input name="Enter a New Room Name"></input>
-  <button>Create a Room</button>
+<form action="create/room/{{ channel }}"  method="post">
+    <input name="Enter a New Room Name"></input>
+    <button>Create a Room</button>
 </form>
 {% endblock %}

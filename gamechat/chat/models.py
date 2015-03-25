@@ -7,6 +7,7 @@ from profiles.models import Profile
 
 class ChatRoom(models.Model):
     name = models.CharField(max_length=200)
+    main = models.CharField(max_length=200, default='halo')
 
     # queue = queue.Queue()
     subscribers = models.ManyToManyField(Profile,
