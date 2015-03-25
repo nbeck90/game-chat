@@ -15,7 +15,6 @@ class Profile(models.Model):
                                       blank=True)
     slug = models.CharField(max_length=30, unique=True, blank=True)
 
-
     def __str__(self):
         return self.user.username
 
@@ -25,7 +24,7 @@ class Profile(models.Model):
 
     @permalink
     def get_absolute_url(self):
-        return ('profile', None, { 'slug': self.slug })
+        return ('profile', None, {'slug': self.slug})
 
     def friending(self, other_profile):
         return self.friends.add(other_profile)

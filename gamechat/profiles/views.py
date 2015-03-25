@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from models import Profile
 from django.shortcuts import redirect
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
 from forms import ProfileForm
 
@@ -35,3 +35,8 @@ class ProfileEdit(UpdateView):
         'friends',
         'blocking')
     success_url = reverse_lazy('profile')
+
+
+class ListProfiles(ListView):
+
+    model = Profile
