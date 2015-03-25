@@ -30,6 +30,7 @@ for chatroom in chatrooms:
         dict_of_queus[chatroom.main][chatroom.name] = {}
 
 
+@csrf_exempt
 def index(request):
     name = request.path.rsplit('/', 1)[1]
     chat_room = []
@@ -63,6 +64,7 @@ def create_room(request):
         return redirect('/')
 
 
+@csrf_exempt
 @login_required
 def chat_room(request, chat_room_id):
     room = ChatRoom.objects.get(pk=chat_room_id)
