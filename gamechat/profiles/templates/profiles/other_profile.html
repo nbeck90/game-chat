@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% block content %}
+{% load thumbnail %}
 <h1>{{ profile }}<h1>
+{% thumbnail profile.picture "300x300" as im %}
+    <img src="{{ im.url }}">
+{% endthumbnail %}
+<br />
 {% if user.profile in profile.friends.all %}
 	<h1>You two are friends! How nice.</h1>
 	{% for chat in active_chats %}
@@ -11,10 +16,22 @@
 		<h1>{{ profile }} owns this chatroom:</h1>
 		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
 	{% endfor %}
-{% elif user.profile not in user.profile.requested_friends %}
+{% else %}
 	<a href="/profile/request_friend/{{profile.pk}}"><button>request friendship</button></a>
 {% endif %}
 {% if profile not in user.profile.blocking.all %}
 	<a href="/profile/block/{{profile.pk}}"><button>block</button></a>
+{% endif %}
+{% if profile.friends.count > 0 %}
+    <h2>{{ profile }}'s friends:</h2>
+    <ul>
+        {% for friend in profile.get_friends %}
+            <ul>
+                <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
+            </ul>
+        {% endfor %}
+    </ul>
+{% else %}
+	<h2> This guy has no friends. Why don't you be his friend?</h2>
 {% endif %}
 {% endblock %}
