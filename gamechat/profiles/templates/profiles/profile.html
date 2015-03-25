@@ -4,12 +4,42 @@
 <h1> this is your profile </h1>
 <h1>{{ profile }}</h1>
 <h2>{{ profile }}'s friends:</h2>
-{% for friend in profile.friends.all %}
-    <p>{{friend}}</p>
-{% endfor %}
+<ul>
+    {% for friend in profile.get_friends %}
+        <ul>
+            <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
+        </ul>
+    {% endfor %}
+</ul>
+<h2>these losers desperately want to be your friend:</h2>
+<ul>
+    {% for potential_friend in profile.requesting_friend.all %}
+        <ul>
+            {{ potential_friend }}
+            <a href="/profile/add_friend/{{potential_friend.pk}}">
+                <button>accept friendship</button>
+            </a>
+        </ul>
+    {% endfor %}
+</ul>
+<h2>{{ profile }} is waiting for a friend request response from:</h2>
+<ul>
+    {% for friend in profile.requested_friends.all %}
+        <ul>
+            <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
+        </ul>
+    {% endfor %}
+</ul>
 <h2>{{ profile }} is blocking:</h2>
-{% for blocked in profile.blocking.all %}
-    <p>{{blocked}}</p>
-{% endfor %}
+<ul>
+    {% for blocked in profile.blocking.all %}
+        <li>
+            <a href="/profile/{{blocked.user.username}}">{{ blocked }}</a>
+            <a href="/profile/unblock/{{blocked.pk}}">
+                <button>unblock</button>
+            </a>
+        </li>
+    {% endfor %}
+</ul>
 <img src="{{ profile.picture.url }}"  style="float:auto"/>
 {% endblock %}
