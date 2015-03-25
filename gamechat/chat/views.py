@@ -7,28 +7,20 @@ from chat.models import ChatRoom
 from gevent import queue
 
 
-QUEUES = {'Chat Room': {'User': queue.Queue(), }, }
-ssb = {'Chat Room': {'User': queue.Queue(), }, }
-wow = {'Chat Room': {'User': queue.Queue(), }, }
-lol = {'Chat Room': {'User': queue.Queue(), }, }
-cs = {'Chat Room': {'User': queue.Queue(), }, }
-destiny = {'Chat Room': {'User': queue.Queue(), }, }
-mine = {'Chat Room': {'User': queue.Queue(), }, }
-hearth = {'Chat Room': {'User': queue.Queue(), }, }
-dota = {'Chat Room': {'User': queue.Queue(), }, }
-diablo = {'Chat Room': {'User': queue.Queue(), }, }
-local = {'Chat Room': {'User': queue.Queue(), }, }
-
-dict_of_queus = {'ssb': ssb, 'wow': wow, 'lol': lol, 'cs': cs, 'destiny': destiny,
-                 'mine': mine, 'hearth': hearth, 'dota': dota, 'diablo': diablo,
-                 'local': local}
+QUEUES = {
+          'Chat Room': {'User': queue.Queue(), },
+          }
 
 
-chatrooms = ChatRoom.objects.all()
-for chatroom in chatrooms:
-    if chatroom.main in dict_of_queus:
-        a = dict_of_queus[chatroom.main]
-        a[chatroom.name] = {}
+list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
+                 'mine', 'hearth', 'dota', 'diablo',
+                 'local']
+
+def check_queues():
+    chatrooms = ChatRoom.objects.all()
+    for chatroom in chatrooms:
+        if chatroom.main in list_of_queus:
+            QUEUES[chatroom.name] = {}
 
 
 @csrf_exempt
@@ -51,14 +43,12 @@ def create_room(request):
         name = request.POST.get('Enter a New Room Name')
         new_room = ChatRoom()
         new_room.name = name
-        if main in dict_of_queus:
+        if main in list_of_queus:
             new_room.main = main
-            main = dict_of_queus[main]
-        else:
-            main = QUEUES
         new_room.owner = request.user.profile
         new_room.save()
-        main[name] = {}
+        QUEUES[name] = {}
+        check_queues()
         return chat_room(request, new_room.pk)
     except IntegrityError:
         return redirect('/')
@@ -67,18 +57,19 @@ def create_room(request):
 @csrf_exempt
 def chat_room(request, chat_room_id):
     room = ChatRoom.objects.get(pk=chat_room_id)
-    sel_queue = dict_of_queus.get(room.main)
+    room_name = str(room.name)
     context = {
         'chatroom': room,
         'subs': room.subscribers.all(),
         'rooms': room.name,
-        'queues': sel_queue,
+        'queues': QUEUES,
     }
     if request.user.profile:
         room.add_subscriber(request.user.profile)
-        a = sel_queue[room.name]
-        a[request.user.username] = queue.Queue()
-        # sel_queue[room.name][request.user.username] = queue.Queue()
+        check_queues()
+        print request.user.username
+        print QUEUES
+        QUEUES[room_name][request.user.username] = queue.Queue()
 
     return render(request, 'chat/chat_room.html', context)
 
@@ -88,11 +79,9 @@ def chat_add(request, chat_room_id):
     message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     chat_room_name = chat_room.name
-    sel_queue = dict_of_queus.get(chat_room.main)
-    for prof in sel_queue[chat_room_name]:
+    for prof in QUEUES[chat_room_name]:
         msg = "{}:    {}".format(request.user.username, message)
-        a = sel_queue.get(chat_room_name)
-        a.get(prof).put_nowait(msg)
+        QUEUES.get(chat_room_name).get(request.user.username).put_nowait(msg)
 
     return JsonResponse({'message': message})
 
@@ -100,13 +89,10 @@ def chat_add(request, chat_room_id):
 @csrf_exempt
 def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
-    chat_room_main = chat_room.main
     chat_room_name = chat_room.name
-    sel_queue = dict_of_queus.get(chat_room_main)
     try:
-        q = sel_queue.get(chat_room_name)
-        b = q.get(request.user.username)
-        msg = b.get(timeout=5)
+        a = QUEUES[chat_room_name][request.user.username]
+        msg = a.get(timeout=5)
     except queue.Empty:
         msg = []
 
