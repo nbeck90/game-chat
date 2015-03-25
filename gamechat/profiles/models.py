@@ -40,6 +40,8 @@ class Profile(models.Model):
         return ('profile', None, {'slug': self.slug})
 
     def friending(self, other_profile):
+        if other_profile in self.blocked_by.all():
+            raise ValueError('You been BLOCKED!')
         return self.friends.add(other_profile)
 
     def unfriending(self, other_profile):
@@ -52,7 +54,7 @@ class Profile(models.Model):
         return self.blocking.add(other_profile)
 
     def unblock(self, other_profile):
-        return self.block.remove(other_profile)
+        return self.blocking.remove(other_profile)
 
     def room_status(self, name=None):
         if self.chat_room_name:
@@ -60,6 +62,3 @@ class Profile(models.Model):
         else:
             self.chat_room_name = name
         return self.Created_room
-
-
-
