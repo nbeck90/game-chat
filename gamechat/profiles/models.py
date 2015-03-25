@@ -14,7 +14,7 @@ class Profile(models.Model):
                                       related_name='_blocking', null=True,
                                       blank=True)
     picture = models.ImageField(
-        upload_to='profiles/static', null=True, blank=True, default='profiles/static/link.jpg')
+        upload_to='photos/', null=True, blank=True, default='photos/link.jpg')
     slug = models.CharField(max_length=32, unique=True, blank=True)
 
     Created_room = False
