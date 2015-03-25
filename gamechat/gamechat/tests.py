@@ -15,18 +15,31 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.PostGenerationMethodCall('set_password', 'password')
 
 
-class LoginTests(TestCase):
+class RegistrationLoginTests(TestCase):
 
     def setUp(self):
         self.bob = UserFactory.create()
         self.client = Client()
 
-    # def setUp(self):
-    #     self.bob = UserFactory.create()
-    #     self.alice = UserFactory.create(username='Alice')
-    #     self.bobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile)
-    #     self.publicbobphoto = PhotoFactory.create(profile=self.bob.ImagerProfile,
-    #                                               published='pb')
+    def test_register_page_works(self):
+        response = self.client.get('/accounts/register/')
+        self.assertEqual(response.status_code, 200)
+
+    def test_register_new_user(self):
+        self.client.post('/accounts/register/',
+                         {'username': 'toby',
+                          'email': 'toby@example.com',
+                          'password1': 'test',
+                          'password2': 'test'}
+                         )
+        self.assertEqual(len(User.objects.all()), 2)
+
+
+class HomePageTests(TestCase):
+
+    def setUp(self):
+        self.bob = UserFactory.create()
+        self.client = Client()
 
     def test_empty_url_finds_home_page(self):
         response = self.client.get('/')
@@ -34,14 +47,16 @@ class LoginTests(TestCase):
 
     def test_sweet_game_pics_on_homepage(self):
         response = self.client.get('/')
-        self.assertIn('smash.jpg', response)
-
-    def test_home_page_photo_is_stock_if_no_user_photos(self):
-        self.publicbobphoto.delete()
-        response = self.client.get('/')
-        self.assertEqual(
-            response.context['random_photo'],
-            self.STOCKPHOTO_URL)
+        self.assertIn('smash.jpg', response.content)
+        self.assertIn('wow.jpg', response.content)
+        self.assertIn('lol.jpg', response.content)
+        self.assertIn('csgo.jpg', response.content)
+        self.assertIn('destiny.jpg', response.content)
+        self.assertIn('mine.jpg', response.content)
+        self.assertIn('hearth.jpg', response.content)
+        self.assertIn('dota.jpg', response.content)
+        self.assertIn('diablo.jpg', response.content)
+        self.assertIn('dnd.jpg', response.content)
 
 
 class TestRegistrationViews(TestCase):
@@ -61,6 +76,3 @@ class TestRegistrationViews(TestCase):
                           'password2': 'test'}
                          )
         self.assertEqual(len(User.objects.all()), 1)
-
-
-

@@ -1,6 +1,10 @@
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'calendar.css' %}">
+
 {% for calendar in calendars %}
     <h1>{{calendar}}</h1>
 {% endfor %}
+
 <ul>
 {% for article in articles %}
     <li>{{ article.title }}</li>

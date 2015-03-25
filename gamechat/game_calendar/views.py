@@ -1,15 +1,14 @@
-from django.views.generic.dates import YearArchiveView
-
 from game_calendar.models import Article
 
 from django.shortcuts import render
 
 
-class ArticleYearArchiveView(YearArchiveView):
-    queryset = Article.objects.all()
-    date_field = "pub_date"
-    make_object_list = True
-    allow_future = True
+def day_detail(request, day, month, year):
+    article_list = Article.objects.filter(pub_date__day=day).filter(pub_date__month=month).filter(pub_date__year=year)
+    return render(request,
+                  'game_calendar/day_detail.html',
+                  {'article_list': article_list}
+                  )
 
 
 def event_detail(request, pk):
@@ -20,12 +19,30 @@ def event_detail(request, pk):
                   {'article': article}
                   )
 
-def calendar(request, month, year):
-    from calendar import HTMLCalendar
-    from django.utils.safestring import mark_safe
-    from datetime import date
 
-    class SpecialCal(HTMLCalendar):
+def calendar(request, month, year):
+    from django.utils.safestring import mark_safe
+
+    year, month = int(year), int(month)
+    calendars = [mark_safe(SpecialCal().formatmonth(year, month))]
+    for i in range(1, 6):
+        month += 1
+        if month > 12:
+            year += 1
+            month = 1
+        calendars.append(mark_safe(SpecialCal().formatmonth(year, month)))
+
+    return render(request,
+                  'game_calendar/calendar.html',
+                  {'calendars': calendars,
+                   'articles': Article.objects.all()}
+                  )
+
+from calendar import HTMLCalendar
+from datetime import date
+
+
+class SpecialCal(HTMLCalendar):
 
         def __init__(self):
             self.articles = Article.objects.all()
@@ -60,23 +77,3 @@ def calendar(request, month, year):
 
         def day_cell(self, cssclass, body):
             return '<td class="%s">%s</td>' % (cssclass, body)
-
-    year, month = int(year), int(month)
-    calendars = [mark_safe(SpecialCal().formatmonth(year, month))]
-    for i in range(1, 6):
-        month += 1
-        if month > 12:
-            year += 1
-            month = 1
-        calendars.append(mark_safe(SpecialCal().formatmonth(year, month)))
-
-    from datetime import date, datetime, time, timedelta
-
-    dt = datetime.combine(date.today(), time(23, 55)) + timedelta(minutes=30)
-
-
-    return render(request,
-                  'game_calendar/calendar.html',
-                  {'calendars': calendars,
-                   'articles': Article.objects.all()}
-                  )
