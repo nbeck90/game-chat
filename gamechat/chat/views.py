@@ -82,7 +82,6 @@ def chat_room(request, chat_room_id):
     return render(request, 'chat/chat_room.html', context)
 
 
-@csrf_exempt
 @login_required
 def chat_add(request, chat_room_id):
     message = request.POST.get('message')
@@ -96,7 +95,6 @@ def chat_add(request, chat_room_id):
     return JsonResponse({'message': message})
 
 
-@csrf_exempt
 @login_required
 def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
