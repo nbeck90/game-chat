@@ -1,11 +1,11 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import RedirectView
 from django.contrib import admin
+from django.views.generic import RedirectView
 admin.autodiscover()
 
 
 urlpatterns = patterns('',
-    url(r'^(/)?$', RedirectView.as_view(url='/chat/')),
+    url(r'^$', 'gamechat.views.home_page', name='home'),
     url(r'^chat/', include('chat.urls')),
     url(r'^profile/', include('profiles.urls')),
     url(r'^admin/', include(admin.site.urls)),
