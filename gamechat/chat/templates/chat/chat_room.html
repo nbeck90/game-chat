@@ -34,7 +34,7 @@
                 timeout: 1000000,
                 success: function(data) {
                   if (data.messages.length > 0) {
-                      $("#messages").append($("<li>" + data.messages + "</li>"))
+                      $("#messages").prepend($("<li>" + data.messages + "</li>"))
                   }
                   return longPoll();
                 },
@@ -44,33 +44,36 @@
             longPoll();
         });
     </script>
-
 </head>
 <body>
 <h1>{{chatroom}}</h1>
-    Messages:
-    <ul id="messages">
-        {% for message in messages %}
-        <li>{{message}}</li>
-        {% endfor %}
-    </ul>
-    <form id="newmessage"> {% csrf_token %}
+<form id="newmessage"> {% csrf_token %}
         <input id="messageinput"></input>
-        <input type="submit"/>
-    </form>
-</button>
-Subscribrs for this room
-{% for sub in subs %}
-<p>{{sub}}</p>
-{% endfor %}
-
-Chat Rooms
-{% for queue in queues %}
-<p>{{queue}}</p>
-{% endfor %}
-</body>
-{% if user.profile == chatroom.owner %}
-    <a href='/chat/delete_room/{{chatroom.pk}}'><button>delete</button><a>
-{% endif %}
+</form>
+<div id='chat_holder'>
+    <div id='chat_window'>
+        Messages:
+        <ul id="messages">
+            {% for message in messages %}
+            <li>{{message}}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div id='room_info'>
+        </button>
+        Subscribrs for this room
+        {% for sub in subs %}
+        <p>{{sub}}</p>
+        {% endfor %}
+        Chat Rooms
+        {% for queue in queues %}
+        <p>{{queue}}</p>
+        {% endfor %}
+        </body>
+        {% if user.profile == chatroom.owner %}
+            <a href='/chat/delete_room/{{chatroom.pk}}'><button>delete</button></a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
 </html>
