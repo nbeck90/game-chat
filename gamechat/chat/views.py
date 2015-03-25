@@ -1,5 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from chat.models import ChatRoom
@@ -8,9 +8,13 @@ from gevent import queue
 
 QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
 
+chatrooms = ChatRoom.objects.all()
+for chatroom in chatrooms:
+    QUEUES[chatroom.name] = {}
+
 
 def index(request):
-    chat_rooms = ChatRoom.objects.order_by('name')[:5]
+    chat_rooms = ChatRoom.objects.order_by('name')[:10]
     context = {
         'chat_list': chat_rooms,
     }
@@ -22,6 +26,7 @@ def create_room(request):
     name = request.POST.get('Enter a New Room Name')
     new_room = ChatRoom()
     new_room.name = name
+    new_room.owner = request.user.profile
     new_room.save()
     QUEUES[name] = {}
     return chat_room(request, new_room.pk)
@@ -69,3 +74,9 @@ def chat_messages(request, chat_room_id):
     }
 
     return JsonResponse(data)
+
+
+def delete_chatroom(request, chat_room_id):
+    if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
+        ChatRoom.objects.get(pk=chat_room_id).delete()
+    return redirect('/chat/')

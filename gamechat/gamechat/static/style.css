@@ -51,7 +51,7 @@ nav {
     text-decoration: none;
     font-family: 'Lato', sans-serif;
     font-weight: 600;
-    color: #99bbff;
+    color: #fff;
     margin-left: 15px;
     margin-right: 15px;
     margin-top: 5px;
@@ -63,4 +63,34 @@ footer {
     position:fixed;
     bottom:0;
     width: 100%;
+}
+
+/***************
+NAV/FOOTER
+***************/
+
+.front_page_game {
+    overflow-x: scroll;
+    float: center;
+    width: 10%;
+    text-align: center;
+    margin: 0;
+    color: #fff;
+    display: inline-block;
+}
+
+.game_image {
+    min-width:100%;
+    height:575px;
+}
+
+#game_holder {
+    display: table;
+    margin: 0 auto;
+}
+
+.game_text {
+    font-size: .9em;
+    font-family: 'Lato', sans-serif;
+    margin-top: -2px;
 }

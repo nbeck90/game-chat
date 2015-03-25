@@ -69,5 +69,8 @@ Chat Rooms
 <p>{{queue}}</p>
 {% endfor %}
 </body>
+{% if user.profile == chatroom.owner %}
+    <a href='/chat/delete_room/{{chatroom.pk}}'><button>delete</button><a>
+{% endif %}
 {% endblock %}
 </html>

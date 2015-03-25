@@ -76,7 +76,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
 DATABASES = {
     'default': dj_database_url.config(
         default='postgres://postgres:@localhost:5432/game_chat_db'
-    )
+        )
 }
 
 # Internationalization
