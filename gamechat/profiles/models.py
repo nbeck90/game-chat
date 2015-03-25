@@ -60,6 +60,3 @@ class Profile(models.Model):
         else:
             self.chat_room_name = name
         return self.Created_room
-
-
-
