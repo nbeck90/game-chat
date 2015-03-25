@@ -8,4 +8,6 @@ urlpatterns = patterns('profiles.views',
     url(r'^profile_list$', (views.ListProfiles.as_view(
         template_name="profiles/profile_list.html")),
         name='profile_list'),
+    url(r'^friend/(?P<pk>\d+)$', 'make_friends', name='profile_edit'),
+    url(r'^block/(?P<pk>\d+)$', 'block_asshole', name='profile_edit'),
 )

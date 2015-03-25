@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from models import Profile
 from django.shortcuts import redirect
 from django.views.generic import UpdateView, ListView
@@ -28,6 +28,16 @@ def other_profile(request, slug):
 
 
     return render(request, 'profiles/other_profile.html', context)
+
+
+def make_friends(request, pk):
+    request.user.profile.friends.add(Profile.objects.get(pk=pk))
+    return redirect('/profile/')
+
+
+def block_asshole(request, pk):
+    request.user.profile.blocking.add(Profile.objects.get(pk=pk))
+    return redirect('/profile/')
 
 
 class ProfileEdit(UpdateView):

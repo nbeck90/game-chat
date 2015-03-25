@@ -11,5 +11,10 @@
 		<h1>{{ profile }} owns this chatroom:</h1>
 		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
 	{% endfor %}
+{% else %}
+<a href="/profile/friend/{{profile.pk}}"><button>friend</button></a>
+{% endif %}
+{% if profile not in user.profile.blocking.all %}
+<a href="/profile/block/{{profile.pk}}"><button>block</button></a>
 {% endif %}
 {% endblock %}
