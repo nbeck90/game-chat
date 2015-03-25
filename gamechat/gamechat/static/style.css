@@ -139,3 +139,24 @@ FRONT PAGE
 #room_title {
     margin-left: 31px;
 }
+
+#profile {
+    text-align: center;
+    font-family: 'Lato', sans-serif;
+    float: center;
+    font-size: 2.5em;
+}
+
+#profile_pic {
+    float: right;
+}
+
+#profile_info {
+    margin-left: 20px;
+    text-align: left;
+}
+
+#profile_info ul{
+    margin-left: 20px;
+    text-align: left;
+}
