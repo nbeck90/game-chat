@@ -1,15 +1,25 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-<h1> this is your profile </h1>
+{% load thumbnail %}
 <h1>{{ profile }}</h1>
+
+{% thumbnail profile.picture "300x300" as im %}
+    <img src="{{ im.url }}">
+{% endthumbnail %}
+
+{% if profile.friends.all %}
 <h2>{{ profile }}'s friends:</h2>
-{% for friend in profile.friends.all %}
-    <p>{{friend}}</p>
+    {% for friend in profile.friends.all %}
+        <a href='/profile/{{friend.user.username}}'>{{friend}}</a>
+    {% endfor %}
+{% else %}
+    <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
+{% endif %}
+{% if profile.blocking.all %}
+    <h2>{{ profile }} is blocking:</h2>
+    {% for blocked in profile.blocking.all %}
+        <a href='/profile/{{blocked.user.username}}'>{{blocked}}</a>
 {% endfor %}
-<h2>{{ profile }} is blocking:</h2>
-{% for blocked in profile.blocking.all %}
-    <p>{{blocked}}</p>
-{% endfor %}
-<img src="{{ profile.picture.url }}"  style="float:auto"/>
+{% endif %}
 {% endblock %}
