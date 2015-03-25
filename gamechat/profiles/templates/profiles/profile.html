@@ -1,5 +1,15 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 {% block content %}
 <h1> this is your profile </h1>
 <h1>{{ profile }}</h1>
+<h2>{{ profile }}'s friends:</h2>
+{% for friend in profile.friends.all %}
+    <p>{{friend}}</p>
+{% endfor %}
+<h2>{{ profile }} is blocking:</h2>
+{% for blocked in profile.blocking.all %}
+    <p>{{blocked}}</p>
+{% endfor %}
+<img src="{{ profile.picture.url }}"  style="float:auto"/>
 {% endblock %}
