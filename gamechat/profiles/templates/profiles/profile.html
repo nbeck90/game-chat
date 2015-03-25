@@ -4,6 +4,10 @@
 {% load thumbnail %}
 <h1>{{ profile }}</h1>
 
+{% if profile.Created_room %}
+    <h1> {{ profile.chat_room }} </h1>
+{% endif %}
+
 {% thumbnail profile.picture "300x300" as im %}
     <img src="{{ im.url }}">
 {% endthumbnail %}
