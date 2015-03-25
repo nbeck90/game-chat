@@ -1,12 +1,12 @@
 from django.shortcuts import render, redirect
 from models import Profile
-from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
 from forms import ProfileForm
 from chat.models import ChatRoom
 
-
+@login_required
 def profile(request):
     profile = request.user.profile
     context = {
@@ -14,7 +14,7 @@ def profile(request):
     }
     return render(request, 'profiles/profile.html', context)    
 
-
+@login_required
 def other_profile(request, slug):
     context = {}
     if request.user.username == slug:
@@ -31,12 +31,12 @@ def other_profile(request, slug):
 
     return render(request, 'profiles/other_profile.html', context)
 
-
+@login_required
 def make_friends(request, pk):
     request.user.profile.requested_friends.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
 
-
+@login_required
 def add_friend(request, pk):
     prof = Profile.objects.get(pk=pk)
     request.user.profile.friends.add(prof)
@@ -44,10 +44,12 @@ def add_friend(request, pk):
     prof.requested_friends.remove(prof)
     return redirect('/profile/'+prof.user.username)
 
+@login_required
 def block_asshole(request, pk):
     request.user.profile.blocking.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
 
+@login_required
 def unblock_asshole(request, pk):
     prof = Profile.objects.get(pk=pk)
     request.user.profile.blocking.remove(prof)
