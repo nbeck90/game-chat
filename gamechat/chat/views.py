@@ -1,6 +1,8 @@
+from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.db import IntegrityError
 from chat.models import ChatRoom
 from gevent import queue
 
@@ -40,21 +42,25 @@ def index(request):
     return render(request, 'chat/index.html', context)
 
 
+@csrf_exempt
 @login_required
 def create_room(request):
-    main = request.path.rsplit('/', 2)[-1]
-    name = request.POST.get('Enter a New Room Name')
-    new_room = ChatRoom()
-    new_room.name = name
-    if main in dict_of_queus:
-        new_room.main = main
-        main = dict_of_queus[main]
-    else:
-        main = QUEUES
-    new_room.owner = request.user.profile
-    new_room.save()
-    main[name] = {}
-    return chat_room(request, new_room.pk)
+    try:
+        main = request.path.rsplit('/', 2)[-1]
+        name = request.POST.get('Enter a New Room Name')
+        new_room = ChatRoom()
+        new_room.name = name
+        if main in dict_of_queus:
+            new_room.main = main
+            main = dict_of_queus[main]
+        else:
+            main = QUEUES
+        new_room.owner = request.user.profile
+        new_room.save()
+        main[name] = {}
+        return chat_room(request, new_room.pk)
+    except IntegrityError:
+        return redirect('/')
 
 
 @login_required
@@ -74,6 +80,7 @@ def chat_room(request, chat_room_id):
     return render(request, 'chat/chat_room.html', context)
 
 
+@csrf_exempt
 @login_required
 def chat_add(request, chat_room_id):
     message = request.POST.get('message')
@@ -87,6 +94,7 @@ def chat_add(request, chat_room_id):
     return JsonResponse({'message': message})
 
 
+@csrf_exempt
 @login_required
 def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
@@ -107,6 +115,7 @@ def chat_messages(request, chat_room_id):
     return JsonResponse(data)
 
 
+@csrf_exempt
 @login_required
 def delete_chatroom(request, chat_room_id):
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:

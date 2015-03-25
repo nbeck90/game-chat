@@ -93,6 +93,7 @@ FRONT PAGE
     margin: 0 auto;
     margin-top: 0px;
     margin-bottom: 20px;
+    width: 1100px;
 }
 
 .game_text {
@@ -114,15 +115,27 @@ FRONT PAGE
     width: 50%;
     height: 300px;
     float: left;
-    overflow: auto;
+    word-wrap:break-word;
+    overflow: scroll;
 }
 
 #room_info {
     display: block;
     width: 30%;
-    float: right
+    float: right;
+    font-size: 1em;
 }
 
 #chat_holder {
     margin-left: 30px;
+}
+
+#messageinput {
+    margin-left: 31px;
+    width: 50%;
+    height: 30px;
+}
+
+#room_title {
+    margin-left: 31px;
 }
