@@ -19,7 +19,7 @@
     </ul>
 {% endif %}
 {% if profile.requested_friends.count > 0 %}
-    <h2>You want these noobs to be your friend?</h2>
+    <h2>You want to be their friend!</h2>
     <ul>
         {% for potential_friend in profile.requested_friends.all %}
             <ul>
@@ -40,10 +40,8 @@
                     <button>accept friendship</button>
                 </a>
             </ul>
-        {% endfor %}
+        {% endfor %}    
     </ul>
-{% else %}
-    <h2>No one wants to be your friend, noob</h2>
 {% endif %}
 {% if profile.blocking.count > 0 %}
     <h2>{{ profile }} is blocking:</h2>
