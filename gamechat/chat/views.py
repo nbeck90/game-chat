@@ -1,5 +1,5 @@
-from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from chat.models import ChatRoom
 from gevent import queue
@@ -40,7 +40,7 @@ def index(request):
     return render(request, 'chat/index.html', context)
 
 
-@csrf_exempt
+@login_required
 def create_room(request):
     main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
@@ -57,6 +57,7 @@ def create_room(request):
     return chat_room(request, new_room.pk)
 
 
+@login_required
 def chat_room(request, chat_room_id):
     room = ChatRoom.objects.get(pk=chat_room_id)
     sel_queue = dict_of_queus[room.main]
@@ -73,7 +74,7 @@ def chat_room(request, chat_room_id):
     return render(request, 'chat/chat_room.html', context)
 
 
-@csrf_exempt
+@login_required
 def chat_add(request, chat_room_id):
     message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
@@ -86,7 +87,7 @@ def chat_add(request, chat_room_id):
     return JsonResponse({'message': message})
 
 
-@csrf_exempt
+@login_required
 def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     chat_room_main = chat_room.main
@@ -106,6 +107,7 @@ def chat_messages(request, chat_room_id):
     return JsonResponse(data)
 
 
+@login_required
 def delete_chatroom(request, chat_room_id):
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
         channel = ChatRoom.objects.get(pk=chat_room_id).main

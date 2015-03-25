@@ -8,7 +8,7 @@
     <img src="{{ im.url }}">
 {% endthumbnail %}
 
-{% if profile.friends.all %}
+{% if profile.friends.count > 0 %}
     <h2>{{ profile }}'s friends:</h2>
     <ul>
         {% for friend in profile.get_friends %}
@@ -17,10 +17,20 @@
             </ul>
         {% endfor %}
     </ul>
+{% endif %}
+{% if profile.requested_friends.count > 0 %}
+    <h2>You want to be their friend!</h2>
+    <ul>
+        {% for potential_friend in profile.requested_friends.all %}
+            <ul>
+                <a href="/profile/{{ potential_friend.user.username }}"> {{ potential_friend }} </a>
+            </ul>
+        {% endfor %}
+    </ul>
 {% else %}
     <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
 {% endif %}
-{% if profile.requesting_friends.all %}
+{% if profile.requesting_friends.count > 0 %}
     <h2>these losers desperately want to be your friend:</h2>
     <ul>
         {% for potential_friend in profile.requesting_friend.all %}
@@ -30,10 +40,10 @@
                     <button>accept friendship</button>
                 </a>
             </ul>
-        {% endfor %}
+        {% endfor %}    
     </ul>
 {% endif %}
-{% if profile.blocking.all %}
+{% if profile.blocking.count > 0 %}
     <h2>{{ profile }} is blocking:</h2>
     <ul>
         {% for blocked in profile.blocking.all %}
