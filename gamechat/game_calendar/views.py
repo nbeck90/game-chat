@@ -1,4 +1,5 @@
 from game_calendar.models import Event
+from game_calendar.forms import EventForm
 from profiles.models import Profile
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
@@ -6,7 +7,12 @@ from django.views.generic.edit import CreateView
 
 class EventCreate(CreateView):
     model = Event
-    fields = ['title', 'date']
+    form_class = EventForm 
+
+    def get_initial(self):
+        initial = super(EventCreate, self).get_initial()
+        initial['user'] = self.request.user
+        return initial
 
     def form_valid(self, form):
         form.instance.creator = Profile.objects.get(
