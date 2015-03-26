@@ -6,14 +6,8 @@
 
 <script type="text/javascript" charset="utf-8">
 $(document).ready(function() {
-    var date = new Date();
-    var d = date.getDate();
-    var m = date.getMonth();
-    var y = date.getFullYear();
-    // page is now ready, initialize the calendar...
 
     $('#calendar').fullCalendar({
-        // put your options and callbacks here
         events:"/calendar/event_feed/"
 
     })

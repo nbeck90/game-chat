@@ -8,3 +8,8 @@ class Article(models.Model):
 
     def get_absolute_url(self):
         return reverse('article-detail', kwargs={'pk': self.pk})
+
+
+class Event(models.Model):
+    title = models.CharField(max_length=200)
+    date = models.DateField()
