@@ -25,7 +25,7 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['www.elleffgee.com/']
 
 ACCOUNT_ACTIVATION_DAYS = 7
 REGISTRATION_AUTO_LOGIN = True
@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'game_calendar',
     'profiles',
     'registration',
-    'sorl.thumbnail',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -64,11 +63,11 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://postgres:@localhost:5432/game_chat_db'
-    )
-}
+# DATABASES = {
+#     'default': dj_database_url.config(
+#         default='postgres://postgres:@localhost:5432/game_chat_db'
+#     )
+# }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
@@ -77,14 +76,13 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'gamechatsite@gmail.com'
 EMAIL_HOST_PASSWORD = 'chatsite123'
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'game_chat_db',
-#         'USER': os.environ.get('USER'),
-#     }
-# }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'game_chat_db',
+        'USER': os.environ.get('USER'),
+    }
+}
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'secret')
 

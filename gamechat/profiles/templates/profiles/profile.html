@@ -1,19 +1,21 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block content %}
-{% load thumbnail %}
+
 <div id='profile'>
     <h1>Welcome, {{ profile }}!</h1>
 </div>
-<a href="/profile/picture/{{ profile.pk }}">
+<div id='profile_pic'>
+    <img src='{{profile.picture.url}}' max-height="300" max-width="300">
+    <br />
+    <a href="/profile/picture/{{ profile.pk }}">
     <button>Change</button>
 </a>
-<div id='profile_pic'>
-    {% thumbnail profile.picture "300x300" as im %}
-        <img src="{{ im.url }}">
-    {% endthumbnail %}
 </div>
 <div id='profile_info'>
+    {% if profile.chat_room %}
+        <a href='{% url 'chat_room' profile.chat_room.pk %}'> Click here to go to your chat room! </a>
+    {% endif %}
     {% if profile.friends.count > 0 %}
         <h2>{{ profile }}'s friends:</h2>
         <ul>
@@ -36,7 +38,7 @@
     {% else %}
         <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
     {% endif %}
-    {% if profile.requesting_friends.count > 0 %}
+    {% if profile.requesting_friend.count > 0 %}
         <h2>these losers desperately want to be your friend:</h2>
         <ul>
             {% for potential_friend in profile.requesting_friend.all %}
@@ -57,6 +59,19 @@
                     <a href="/profile/{{blocked.user.username}}">{{ blocked }}</a>
                     <a href="/profile/unblock/{{blocked.pk}}">
                         <button>unblock</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if events.count > 0 %}
+        <h2>You have been invited to join:</h2>
+        <ul>
+            {% for event in events %}
+                <li>
+                    {{ event.title }}
+                    <a href="/profile/accept_invite/{{ event.pk }}">
+                        <button>accept invite</button>
                     </a>
                 </li>
             {% endfor %}

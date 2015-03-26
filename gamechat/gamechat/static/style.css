@@ -100,6 +100,8 @@ FRONT PAGE
     font-size: .7em;
     font-family: 'Lato', sans-serif;
     margin-top: -2px;
+    width: 110px;
+    height: 20px;
 }
 
 #chat_window {

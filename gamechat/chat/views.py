@@ -29,23 +29,19 @@ def index(request):
     name = request.path.rsplit('/', 1)[1]
     chat_room = []
     for room in ChatRoom.objects.filter(main=name).all():
-        chat_room.append(room)
+        users = len(room.subscribers.all())
+        chat_room.append((room, users))
     context = {
         'chat_list': chat_room,
         'channel': name,
     }
     return render(request, 'chat/index.html', context)
 
-# def index(request):
-#     chat_rooms = ChatRoom.objects.order_by('name')[:10]
-#     context = {
-#         'chat_list': chat_rooms,
-#     }
-#     return render(request, 'chat/index.html', context)
-
 
 @csrf_exempt
 def create_room(request):
+    request.user.profile.own_room = True
+    request.user.profile.save()
     main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
     new_room = ChatRoom()
@@ -89,8 +85,10 @@ def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
         q = QUEUES[chat_room][request.user.username]
-        print request.user.username
         msg = q.get(timeout=1)
+        name = msg.split()[0][:-1]
+        if request.user.profile.blocking.filter(user__username=name):
+            msg = ["{}:    {}".format(name, 'blocked')]
     except queue.Empty:
         msg = []
 
@@ -102,6 +100,9 @@ def chat_messages(request, chat_room_id):
 
 
 def delete_chatroom(request, chat_room_id):
+    request.user.profile.own_room = False
+    request.user.profile.save()
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
         ChatRoom.objects.get(pk=chat_room_id).delete()
+        request.user.profile.Created_room = False
     return redirect('/')
