@@ -54,9 +54,6 @@
             {% endfor %}
         </ul>
     </div>
-    {% for queue in queues %}
-    <p>{{queue}}</p>
-    {% endfor %}
     <div id='room_info'>
         </button>
         Subscribrs for this room:
@@ -64,10 +61,6 @@
         <p>{{sub}}</p>
         {% endfor %}
         <br>
-        Chat Rooms:
-        {% for queue in queues %}
-        <p>{{queue}}</p>
-        {% endfor %}
         </body>
         {% if user.profile == chatroom.owner %}
             <a href='/chat/delete_room/{{chatroom.pk}}'><button>delete</button></a>
