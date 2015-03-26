@@ -8,7 +8,7 @@ from gevent import queue
 
 class QueueContainer(object):
     def __new__(cls, *args, **kwargs):
-        if not cls._instance:
+        if not hasattr(cls, '_instance'):
             self = super(QueueContainer, cls).__new__(cls, *args, **kwargs)
             QueueContainer.__init__(self, *args, **kwargs)
             cls._instance = self
