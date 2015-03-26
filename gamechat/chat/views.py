@@ -36,13 +36,6 @@ def index(request):
     }
     return render(request, 'chat/index.html', context)
 
-# def index(request):
-#     chat_rooms = ChatRoom.objects.order_by('name')[:10]
-#     context = {
-#         'chat_list': chat_rooms,
-#     }
-#     return render(request, 'chat/index.html', context)
-
 
 @csrf_exempt
 def create_room(request):

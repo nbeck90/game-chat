@@ -15,5 +15,6 @@ urlpatterns = patterns('profiles.views',
     url(r'^add_friend/(?P<pk>\d+)$', 'add_friend', name='add_friend'),
     url(r'^block/(?P<pk>\d+)$', 'block_asshole', name='block_asshole'),
     url(r'^unblock/(?P<pk>\d+)$', 'unblock_asshole', name='unblock_asshole'),
-    url(r'^picture/(?P<pk>\d+)$', login_required(update_picture.as_view()), name='update_picture')
+    url(r'^picture/(?P<pk>\d+)$', login_required(update_picture.as_view()), name='update_picture'),
+    url(r'^accept_invite/(?P<pk>\d+)$', 'accept_invitation', name='accept_invitation'),
 )

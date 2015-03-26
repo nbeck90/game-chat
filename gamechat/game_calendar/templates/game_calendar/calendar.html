@@ -1,8 +1,21 @@
-{% for calendar in calendars %}
-    <h1>{{calendar}}</h1>
-{% endfor %}
-<ul>
-{% for article in articles %}
-    <li>{{ article.title }}</li>
-{% endfor %}
-</ul>
+{% extends 'base.html' %}
+{% block content %}
+{% load staticfiles %}
+<link rel='stylesheet' href="{% static 'fullcalendar.css' %}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js'></script>
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+
+    $('#calendar').fullCalendar({
+        events:"/calendar/event_feed/"
+
+    })
+
+});
+</script>
+<a href="/calendar/create_event/">CREATE EVENT</a>
+<div id='calendar'></div>
+
+{% endblock %}
