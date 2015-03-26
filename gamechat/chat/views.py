@@ -26,6 +26,7 @@ for chatroom in chatrooms:
 
 @csrf_exempt
 def index(request):
+    print request.user.profile.own_room
     name = request.path.rsplit('/', 1)[1]
     chat_room = []
     for room in ChatRoom.objects.filter(main=name).all():
@@ -39,6 +40,9 @@ def index(request):
 
 @csrf_exempt
 def create_room(request):
+    request.user.profile.own_room = True
+    request.user.profile.save()
+    print request.user.profile.own_room
     main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
     new_room = ChatRoom()
@@ -95,6 +99,9 @@ def chat_messages(request, chat_room_id):
 
 
 def delete_chatroom(request, chat_room_id):
+    request.user.profile.own_room = False
+    request.user.profile.save()
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
         ChatRoom.objects.get(pk=chat_room_id).delete()
+        request.user.profile.Created_room = False
     return redirect('/')
