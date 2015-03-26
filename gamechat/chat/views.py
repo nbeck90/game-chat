@@ -73,7 +73,10 @@ def chat_room(request, chat_room_id):
 
 @csrf_exempt
 def chat_add(request, chat_room_id):
+    print "-"*50
     print "in 'add': {}".format(QUEUES)
+    print "this is the QUEUES object id: {}".format(id(QUEUES))
+    print "-"*50
     message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     for prof in QUEUES[chat_room]:
@@ -84,7 +87,10 @@ def chat_add(request, chat_room_id):
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
-    print "in put: {}".format(QUEUES)
+    print "*"*50
+    print "in get: {}".format(QUEUES)
+    print "this is the QUEUES object id: {}".format(id(QUEUES))
+    print "*"*50
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
         q = QUEUES[chat_room][request.user.username]
