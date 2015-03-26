@@ -1,6 +1,6 @@
 keypair: nbeck
 security_group: vpc-ssh-access
-instance_type: t1.micro
+instance_type: m3.large
 ami: ami-810a2fb1
 vpc_subnet_id: subnet-78b93a1d
 region: us-west-2
