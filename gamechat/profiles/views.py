@@ -27,9 +27,7 @@ def other_profile(request, slug):
         context['active_chats'] = ChatRoom.objects.filter(subscribers=profile)
         context['owned_chats'] = ChatRoom.objects.filter(owner=profile)
     except Profile.DoesNotExist:
-        pass
-
-
+        return redirect('/')
     return render(request, 'profiles/other_profile.html', context)
 
 @login_required
