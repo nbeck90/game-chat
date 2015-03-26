@@ -59,10 +59,20 @@ class HomePageTests(TestCase):
         self.assertIn('dnd.jpg', response.content)
 
 
-class TestRegistrationViews(TestCase):
+class TestRegistrationLogin(TestCase):
 
     def setUp(self):
+        self.bob = UserFactory.create()
+        self.bob_profile = self.bob.profile
         self.client = Client()
+
+    def test_login_page_works(self):
+        self.client.post(
+            '/accounts/login/',
+            {'username': "bob",
+             'password': "password"}
+            )
+        self.assertIn('_auth_user_id', self.client.session)
 
     def test_register_page_works(self):
         response = self.client.get('/accounts/register/')
@@ -75,4 +85,4 @@ class TestRegistrationViews(TestCase):
                           'password1': 'test',
                           'password2': 'test'}
                          )
-        self.assertEqual(len(User.objects.all()), 1)
+        self.assertEqual(len(User.objects.all()), 2)

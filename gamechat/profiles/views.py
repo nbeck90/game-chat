@@ -6,6 +6,7 @@ from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
 from chat.models import ChatRoom
 
+
 @login_required
 def profile(request):
     profile = request.user.profile
@@ -13,7 +14,8 @@ def profile(request):
         'profile': profile,
         'events': Event.objects.filter(invitees=profile)
     }
-    return render(request, 'profiles/profile.html', context)    
+    return render(request, 'profiles/profile.html', context)
+
 
 @login_required
 def other_profile(request, slug):
@@ -29,13 +31,14 @@ def other_profile(request, slug):
     except Profile.DoesNotExist:
         pass
 
-
     return render(request, 'profiles/other_profile.html', context)
+
 
 @login_required
 def make_friends(request, pk):
     request.user.profile.requested_friends.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
+
 
 @login_required
 def add_friend(request, pk):
@@ -45,10 +48,12 @@ def add_friend(request, pk):
     prof.requested_friends.remove(prof)
     return redirect('/profile/'+prof.user.username)
 
+
 @login_required
 def block_asshole(request, pk):
     request.user.profile.blocking.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
+
 
 @login_required
 def unblock_asshole(request, pk):
@@ -56,13 +61,14 @@ def unblock_asshole(request, pk):
     request.user.profile.blocking.remove(prof)
     return redirect('/profile/'+prof.user.username)
 
-
+@login_required
 def accept_invitation(request, pk):
     profile = request.user.profile
     event = Event.objects.get(pk=pk)
     event.attending.add(profile)
     event.invitees.remove(profile)
     return redirect('/calendar/')
+
 
 class update_picture(UpdateView):
 
@@ -76,9 +82,9 @@ class update_picture(UpdateView):
         return default
 
     def dispatch(self, request, *args, **kwargs):
-       if int(self.kwargs['pk']) != self.request.user.profile.pk:
-           return redirect('/accounts/login/')
-       return super(update_picture, self).dispatch(request, *args, **kwargs)
+        if int(self.kwargs['pk']) != self.request.user.profile.pk:
+            return redirect('/accounts/login/')
+        return super(update_picture, self).dispatch(request, *args, **kwargs)
 
     model = Profile
     template_name = 'profiles/update_picture.html'
