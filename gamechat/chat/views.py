@@ -8,17 +8,40 @@ from gevent import queue
 
 QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
 
+list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
+                 'mine', 'hearth', 'dota', 'diablo',
+                 'local']
+
+
+def check_queues():
+    chatrooms = ChatRoom.objects.all()
+    for chatroom in chatrooms:
+        if chatroom.main in list_of_queus:
+            QUEUES[chatroom.name] = {}
+
 chatrooms = ChatRoom.objects.all()
 for chatroom in chatrooms:
     QUEUES[chatroom.name] = {}
 
 
+@csrf_exempt
 def index(request):
-    chat_rooms = ChatRoom.objects.order_by('name')[:10]
+    name = request.path.rsplit('/', 1)[1]
+    chat_room = []
+    for room in ChatRoom.objects.filter(main=name).all():
+        chat_room.append(room)
     context = {
-        'chat_list': chat_rooms,
+        'chat_list': chat_room,
+        'channel': name,
     }
     return render(request, 'chat/index.html', context)
+
+# def index(request):
+#     chat_rooms = ChatRoom.objects.order_by('name')[:10]
+#     context = {
+#         'chat_list': chat_rooms,
+#     }
+#     return render(request, 'chat/index.html', context)
 
 
 @csrf_exempt
@@ -79,4 +102,4 @@ def chat_messages(request, chat_room_id):
 def delete_chatroom(request, chat_room_id):
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
         ChatRoom.objects.get(pk=chat_room_id).delete()
-    return redirect('/chat/')
+    return redirect('/')
