@@ -12,10 +12,12 @@
     {% endif %}
     {% if user.profile in profile.friends.all %}
     	<h1>You two are friends! How nice.</h1>
-    	{% for chat in active_chats %}
-    		<h1>{{ profile }} is currently in:</h1>
-    		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
-    	{% endfor %}
+        {% if active_chats %}
+            <h1>{{ profile }} is currently in:</h1>
+        	{% for chat in active_chats %}
+        		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
+        	{% endfor %}
+        {% endif %}
     	{% for chat in owned_chats %}
     		<h1>{{ profile }} owns this chatroom:</h1>
     		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
