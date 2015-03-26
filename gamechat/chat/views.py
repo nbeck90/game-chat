@@ -46,10 +46,12 @@ def index(request):
 
 @csrf_exempt
 def create_room(request):
+    main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
     new_room = ChatRoom()
     new_room.name = name
     new_room.owner = request.user.profile
+    new_room.main = main
     new_room.save()
     QUEUES[name] = {}
     return chat_room(request, new_room.pk)
