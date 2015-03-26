@@ -39,7 +39,7 @@
         <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
     {% endif %}
     {% if profile.requesting_friend.count > 0 %}
-        <h2>these losers desperately want to be your friend:</h2>
+        <h2>these users want to be your friend:</h2>
         <ul>
             {% for potential_friend in profile.requesting_friend.all %}
                 <ul>

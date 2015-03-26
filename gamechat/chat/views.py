@@ -1,13 +1,11 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from chat.models import ChatRoom
 from profiles.models import Profile
+from gamechat.urls import QUEUES
 from gevent import queue
 
-
-QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
 
 list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
                  'mine', 'hearth', 'dota', 'diablo',
@@ -58,9 +56,6 @@ def chat_room(request, chat_room_id):
     chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
     # room = ChatRoom.objects.get(pk=chat_room_id)
     user = Profile.objects.get(user=request.user)
-    print user
-    print user.chat_room_name
-    print chatroom.name
     user.chat_room_name = chatroom.name
     user.save()
     active = Profile.objects.filter(chat_room_name=chatroom.name)
@@ -73,7 +68,6 @@ def chat_room(request, chat_room_id):
     if request.user.profile:
         chatroom.add_subscriber(request.user.profile)
         QUEUES[chatroom.name][request.user.username] = queue.Queue()
-
     return render(request, 'chat/chat_room.html', context)
 
 
@@ -84,7 +78,6 @@ def chat_add(request, chat_room_id):
     for prof in QUEUES[chat_room]:
         msg = "{}:    {}".format(request.user.username, message)
         QUEUES[chat_room][prof].put_nowait(msg)
-
     return JsonResponse({'message': message})
 
 
