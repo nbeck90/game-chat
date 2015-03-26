@@ -20,7 +20,6 @@ class EventFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Event
-        django_get_or_create = ('creator',)
 
     creator = UserFactory.create().profile
 
@@ -56,10 +55,11 @@ class CalendarViewTests(TestCase):
                                               date='2015-03-02')
         self.client = Client()
 
-    @skip('broken test')
     def test_events_are_returned_with_return_event(self):
         self.client.login(username='bob', password='password')
         response = self.client.get('/calendar/event_feed/')
+        self.assertContains(response, 'bob_event')
+        self.assertContains(response, 'bob_event2')
 
     def test_calendar_view_dispays_calendar_object(self):
         self.client.login(username='bob', password='password')
@@ -68,10 +68,10 @@ class CalendarViewTests(TestCase):
 
     def test_create_event_works(self):
         self.client.login(username='bob', password='password')
-        self.assertEqual(Event.objects.all().count(), 2)
+        self.assertEqual(Event.objects.all().count(), 3)
         self.client.post(
             '/calendar/create_event/',
             {'title': "bob's new event",
              'date': "2015-03-02"}
             )
-        self.assertEqual(Event.objects.all().count(), 3)
+        self.assertEqual(Event.objects.all().count(), 4)

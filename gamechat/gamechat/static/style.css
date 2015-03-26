@@ -163,10 +163,31 @@ FRONT PAGE
 }
 
 #profile_pic {
-    margin: 0 auto;
-    padding-left: 135px;
+    margin: auto;
     margin-top: 20px;
-    width: 50%
+}
+
+#profile_pic img{
+    max-height: 300px;
+    max-width: 300px;
+    margin: auto;
+    display: block;
+}
+
+#profile_pic_edit {
+    margin: auto;
+    margin-top: 20px;
+}
+
+#profile_pic_edit img{
+    max-height: 300px;
+    max-width: 300px;
+    margin: auto;
+    display: block;
+}
+
+#edit_photo {
+    text-align: center;
 }
 
 #profile_edit{
@@ -179,18 +200,20 @@ FRONT PAGE
 #chat_link {
     float: right;
     width: 30%;
-    padding-right: 90px;
+    padding-right: 40px;
     margin-top: -3px;
 }
 
 #profile_info {
-    float: center;
     text-align: center;
-    width: 50%;
 }
 
 #profile_info ul{
     text-align: center;
+}
+
+#pending_friends{
+    margin-left: -100px;
 }
 
 /***************
