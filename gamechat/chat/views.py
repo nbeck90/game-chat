@@ -1,15 +1,11 @@
-from django.apps import apps
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from chat.models import ChatRoom
+import chat
 from gevent import queue
 
-
-chat_app = apps.get_app_config('chat')
-
-
-QUEUES = chat_app.QUEUES
+QUEUES = chat.urls.QUEUES
 
 
 list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
