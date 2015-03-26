@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^calendar/', include('game_calendar.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/profile', RedirectView.as_view(url='/profile/')),
+    url(r'^.*$', 'gamechat.views.four_o_four', name='home'),
 )
 if settings.DEBUG:
     urlpatterns += static(dcs.MEDIA_URL, document_root=dcs.MEDIA_ROOT)
