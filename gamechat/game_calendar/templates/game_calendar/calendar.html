@@ -1,12 +1,23 @@
 {% load staticfiles %}
-<link rel="stylesheet" href="{% static 'calendar.css' %}">
+<link rel='stylesheet' href="{% static 'fullcalendar.css' %}"/>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.3.1/fullcalendar.min.js'></script>
 
-{% for calendar in calendars %}
-    <h1>{{calendar}}</h1>
-{% endfor %}
+<script type="text/javascript" charset="utf-8">
+$(document).ready(function() {
+    var date = new Date();
+    var d = date.getDate();
+    var m = date.getMonth();
+    var y = date.getFullYear();
+    // page is now ready, initialize the calendar...
 
-<ul>
-{% for article in articles %}
-    <li>{{ article.title }}</li>
-{% endfor %}
-</ul>
+    $('#calendar').fullCalendar({
+        // put your options and callbacks here
+        events:"/calendar/event_feed/"
+
+    })
+
+});
+</script>
+<div id='calendar'></div>
