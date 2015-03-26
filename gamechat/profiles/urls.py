@@ -1,10 +1,11 @@
 from django.conf.urls import patterns, url
+from django.contrib.auth.decorators import login_required
+from views import update_picture
 import views
 
 urlpatterns = patterns('profiles.views',
     url(r'^$', 'profile', name='profile'),
     url(r'^(?P<slug>[\w\-]+)/$', 'other_profile', name='other_profile'),
-    url(r'^edit$', 'ProfileEdit', name='profile_edit'),
     url(r'^profile_list', (views.ListProfiles.as_view(
         template_name="profiles/profile_list.html")),
         name='profile_list'),
@@ -14,4 +15,5 @@ urlpatterns = patterns('profiles.views',
     url(r'^add_friend/(?P<pk>\d+)$', 'add_friend', name='add_friend'),
     url(r'^block/(?P<pk>\d+)$', 'block_asshole', name='block_asshole'),
     url(r'^unblock/(?P<pk>\d+)$', 'unblock_asshole', name='unblock_asshole'),
+    url(r'^picture/(?P<pk>\d+)$', login_required(update_picture.as_view()), name='update_picture')
 )

@@ -7,6 +7,9 @@
 {% thumbnail profile.picture "300x300" as im %}
     <img src="{{ im.url }}">
 {% endthumbnail %}
+<a href="/profile/picture/{{ profile.pk }}">
+    <button>Change</button>
+</a>
 
 {% if profile.friends.count > 0 %}
     <h2>{{ profile }}'s friends:</h2>
