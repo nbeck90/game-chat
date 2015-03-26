@@ -22,9 +22,11 @@ class Profile(models.Model):
 
     picture = models.ImageField(
         upload_to='photos/', null=True, blank=True, default='photos/link.jpg')
+    
     slug = models.CharField(max_length=32, unique=True, blank=True)
 
-    Created_room = False
+    own_room = models.BooleanField(default=False)
+
     chat_room_name = models.CharField(max_length=64, unique=True,
                                       blank=True, null=True)
 
