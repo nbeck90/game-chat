@@ -99,7 +99,7 @@ def chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
         q = QUEUES[chat_room][request.user.username]
-        msg = q.get(timeout=.5)
+        msg = q.get(timeout=.05)
         msg = escape(msg)
         name = msg.split()[0][:-1]
         if request.user.profile.blocking.filter(user__username=name):
