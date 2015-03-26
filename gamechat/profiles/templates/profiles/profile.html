@@ -2,20 +2,27 @@
 {% load staticfiles %}
 {% block content %}
 
-<div id='profile'>
-    <h1>Welcome, {{ profile }}!</h1>
-</div>
 <div id='profile_pic'>
     <img src='{{profile.picture.url}}' max-height="300" max-width="300">
     <br />
-    <a href="/profile/picture/{{ profile.pk }}">
-    <button>Change</button>
-</a>
 </div>
-<div id='profile_info'>
+<div id='profile'>
+    <h1>Welcome, {{ profile }}!</h1>
+</div>
+<hr>
+<div id='profile_edit'>
+    <a href="/profile/picture/{{ profile.pk }}">
+    Edit Profile Picture
+    </a>
+</div>
+<div id='chat_link'>
     {% if profile.chat_room %}
         <a href='{% url 'chat_room' profile.chat_room.pk %}'> Click here to go to your chat room! </a>
     {% endif %}
+</div>
+<br>
+<hr>
+<div id='profile_info'>
     {% if profile.friends.count > 0 %}
         <h2>{{ profile }}'s friends:</h2>
         <ul>
