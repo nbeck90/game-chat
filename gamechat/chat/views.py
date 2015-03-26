@@ -85,6 +85,9 @@ def chat_messages(request, chat_room_id):
     try:
         q = QUEUES[chat_room][request.user.username]
         msg = q.get(timeout=1)
+        name = msg.split()[0][:-1]
+        if request.user.profile.blocking.filter(user__username=name):
+            msg = ["{}:    {}".format(name, 'blocked')]
     except queue.Empty:
         msg = []
 
