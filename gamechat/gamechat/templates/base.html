@@ -11,6 +11,7 @@
                 <a href="{% url 'home' %}" class='nav_icon'>Home</a>
                 {% if user.is_authenticated %}
                 <a href="/profile" class='nav_icon'>Profile</a>
+                <a href="/calendar/" class='nav_icon'>Calendar</a>
                 <a href="/accounts/logout" class='nav_icon'>Logout</a>
                 {% else %}
                 <a href="/accounts/login" class='nav_icon'>Login</a>

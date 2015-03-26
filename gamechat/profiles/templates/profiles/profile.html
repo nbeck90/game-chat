@@ -38,7 +38,7 @@
     {% else %}
         <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
     {% endif %}
-    {% if profile.requesting_friends.count > 0 %}
+    {% if profile.requesting_friend.count > 0 %}
         <h2>these losers desperately want to be your friend:</h2>
         <ul>
             {% for potential_friend in profile.requesting_friend.all %}
@@ -59,6 +59,19 @@
                     <a href="/profile/{{blocked.user.username}}">{{ blocked }}</a>
                     <a href="/profile/unblock/{{blocked.pk}}">
                         <button>unblock</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if events.count > 0 %}
+        <h2>You have been invited to join:</h2>
+        <ul>
+            {% for event in events %}
+                <li>
+                    {{ event.title }}
+                    <a href="/profile/accept_invite/{{ event.pk }}">
+                        <button>accept invite</button>
                     </a>
                 </li>
             {% endfor %}

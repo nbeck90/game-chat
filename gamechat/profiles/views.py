@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from models import Profile
+from game_calendar.models import Event
 from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
@@ -9,7 +10,8 @@ from chat.models import ChatRoom
 def profile(request):
     profile = request.user.profile
     context = {
-        'profile': profile
+        'profile': profile,
+        'events': Event.objects.filter(invitees=profile)
     }
     return render(request, 'profiles/profile.html', context)    
 
@@ -55,6 +57,12 @@ def unblock_asshole(request, pk):
     return redirect('/profile/'+prof.user.username)
 
 
+def accept_invitation(request, pk):
+    profile = request.user.profile
+    event = Event.objects.get(pk=pk)
+    event.attending.add(profile)
+    event.invitees.remove(profile)
+    return redirect('/calendar/')
 
 class update_picture(UpdateView):
 
