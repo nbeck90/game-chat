@@ -81,6 +81,7 @@ FRONT PAGE
     margin: 0;
     color: #fff;
     display: inline-block;
+    overflow: hidden;
 }
 
 .game_image {
