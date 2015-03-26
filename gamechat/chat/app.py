@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+from gevent import queue
 
 
 class QueueContainer(object):
