@@ -35,6 +35,7 @@ def index(request):
         'chat_list': chat_room,
         'channel': name,
     }
+    print QUEUES
     return render(request, 'chat/index.html', context)
 
 
@@ -50,6 +51,7 @@ def create_room(request):
     new_room.main = main
     new_room.save()
     QUEUES[name] = {}
+    print QUEUES
     return chat_room(request, new_room.pk)
 
 
@@ -65,23 +67,24 @@ def chat_room(request, chat_room_id):
     if request.user.profile:
         room.add_subscriber(request.user.profile)
         QUEUES[chatroom.name][request.user.username] = queue.Queue()
-
+    print QUEUES
     return render(request, 'chat/chat_room.html', context)
 
 
 @csrf_exempt
 def chat_add(request, chat_room_id):
+    print QUEUES
     message = request.POST.get('message')
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     for prof in QUEUES[chat_room]:
         msg = "{}:    {}".format(request.user.username, message)
         QUEUES[chat_room][prof].put_nowait(msg)
-
     return JsonResponse({'message': message})
 
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
+    print QUEUES
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
         q = QUEUES[chat_room][request.user.username]
