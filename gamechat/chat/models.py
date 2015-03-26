@@ -13,7 +13,7 @@ class ChatRoom(models.Model):
     subscribers = models.ManyToManyField(Profile,
                                          related_name='subs')
     owner = models.OneToOneField(Profile, related_name='chat_room',
-                                    blank=True, null=True)
+                                          blank=True, null=True)
 
     def __unicode__(self):
         return self.name

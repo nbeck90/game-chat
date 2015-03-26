@@ -3,7 +3,6 @@ from models import Profile
 from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
-from forms import ProfileForm
 from chat.models import ChatRoom
 
 @login_required
@@ -55,14 +54,27 @@ def unblock_asshole(request, pk):
     request.user.profile.blocking.remove(prof)
     return redirect('/profile/'+prof.user.username)
 
-class ProfileEdit(UpdateView):
-    model = Profile
-    template_name = 'profile_edit.html'
-    form_class = ProfileForm
 
-    fields = (
-        'friends',
-        'blocking')
+
+class update_picture(UpdateView):
+
+    def get_context_data(self, *args, **kwargs):
+        default = super(UpdateView, self).get_context_data(*args, **kwargs)
+        profile = Profile.objects.get(pk=self.kwargs['pk'])
+        try:
+            default['picture_url'] = profile.picture.url
+        except ValueError:
+            pass
+        return default
+
+    def dispatch(self, request, *args, **kwargs):
+       if int(self.kwargs['pk']) != self.request.user.profile.pk:
+           return redirect('/accounts/login/')
+       return super(update_picture, self).dispatch(request, *args, **kwargs)
+
+    model = Profile
+    template_name = 'profiles/update_picture.html'
+    fields = ('picture',)
     success_url = reverse_lazy('profile')
 
 
