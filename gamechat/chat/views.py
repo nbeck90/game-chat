@@ -102,4 +102,4 @@ def chat_messages(request, chat_room_id):
 def delete_chatroom(request, chat_room_id):
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
         ChatRoom.objects.get(pk=chat_room_id).delete()
-    return redirect('/chat/')
+    return redirect('/')
