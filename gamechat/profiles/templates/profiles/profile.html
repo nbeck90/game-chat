@@ -6,7 +6,7 @@
     <h1>Welcome, {{ profile }}!</h1>
 </div>
 <div id='profile_pic'>
-    <img src='{{profile.picture.url}}' height="300" width="300">
+    <img src='{{profile.picture.url}}' max-height="300" max-width="300">
     <br />
     <a href="/profile/picture/{{ profile.pk }}">
     <button>Change</button>
