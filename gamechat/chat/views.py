@@ -6,7 +6,27 @@ from chat.models import ChatRoom
 from gevent import queue
 
 
-QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
+class QueueContainer(object):
+    def __new__(cls, *args, **kwargs):
+        if not cls._instance:
+            self = super(QueueContainer, cls).__new__(cls, *args, **kwargs)
+            QueueContainer.__init__(self, *args, **kwargs)
+            cls._instance = self
+        return cls._instance
+
+    def __init__(self, *args, **kwargs):
+        self._container = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
+
+    def __setitem__(self, key, value):
+        self._container[key] = value
+
+    def __getitem__(self, key):
+        return self._container[key]
+
+    def __delitem__(self, key):
+        del self._container[key]
+
+QUEUES = QueueContainer()
 
 list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
                  'mine', 'hearth', 'dota', 'diablo',
