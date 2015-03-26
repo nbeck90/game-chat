@@ -25,7 +25,7 @@
 <div id='profile_info'>
     {% if profile.friends.count > 0 %}
         <h2>{{ profile }}'s friends:</h2>
-        <ul>
+        <ul id='pending_friends'>
             {% for friend in profile.get_friends %}
                 <ul>
                     <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
@@ -60,7 +60,7 @@
     {% endif %}
     {% if profile.blocking.count > 0 %}
         <h2>You are blocking:</h2>
-        <ul>
+        <ul id='pending_friends'>
             {% for blocked in profile.blocking.all %}
                 <li>
                     <a href="/profile/{{blocked.user.username}}">{{ blocked }}</a>
@@ -73,7 +73,7 @@
     {% endif %}
     {% if events.count > 0 %}
         <h2>You have been invited to join:</h2>
-        <ul>
+        <ul id='pending_friends'>
             {% for event in events %}
                 <li>
                     {{ event.title }}
