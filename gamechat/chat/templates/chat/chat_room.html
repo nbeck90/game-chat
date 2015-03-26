@@ -13,7 +13,7 @@
                 var message = $("#messageinput").val();
                 $.ajax({
                     'type'     : 'POST',
-                    'url'      : '/chat/list/add/{{chatroom.pk}}/',
+                    'url'      : '/chat/add/{{chatroom.pk}}/',
                     'data'     : { 'message': message },
                     'dataType' : 'json',
                 });
@@ -24,7 +24,7 @@
             var longPoll = function() {
               return $.ajax({
                 type: "POST",
-                url: "/chat/list/show/{{chatroom.pk}}/",
+                url: "/chat/show/{{chatroom.pk}}/",
                 async: true,
                 cache: false,
                 timeout: 1000000,
