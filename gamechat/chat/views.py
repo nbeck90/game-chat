@@ -1,7 +1,7 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.db import IntegrityError
 from chat.models import ChatRoom
 from gevent import queue
 
@@ -40,17 +40,22 @@ def index(request):
 
 @csrf_exempt
 def create_room(request):
-    request.user.profile.own_room = True
-    request.user.profile.save()
     main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
-    new_room = ChatRoom()
-    new_room.name = name
-    new_room.owner = request.user.profile
-    new_room.main = main
-    new_room.save()
-    QUEUES[name] = {}
-    return chat_room(request, new_room.pk)
+    try: 
+        if name.strip():
+            request.user.profile.own_room = True
+            request.user.profile.save()
+            new_room = ChatRoom()
+            new_room.name = name
+            new_room.owner = request.user.profile
+            new_room.main = main
+            new_room.save()
+            QUEUES[name] = {}
+            return redirect('/chat/room/'+str(new_room.pk))
+    except IntegrityError, AttributeError:
+        pass
+    return redirect('/chat/' + main)
 
 
 def chat_room(request, chat_room_id):
