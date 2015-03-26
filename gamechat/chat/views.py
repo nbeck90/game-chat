@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
 from chat.models import ChatRoom
+from profiles.models import Profile
 from gevent import queue
 
 
@@ -13,11 +14,11 @@ list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
                  'local']
 
 
-def check_queues():
-    chatrooms = ChatRoom.objects.all()
-    for chatroom in chatrooms:
-        if chatroom.main in list_of_queus:
-            QUEUES[chatroom.name] = {}
+# def check_queues():
+#     chatrooms = ChatRoom.objects.all()
+#     for chatroom in chatrooms:
+#         if chatroom.main in list_of_queus:
+#             QUEUES[chatroom.name] = {}
 
 chatrooms = ChatRoom.objects.all()
 for chatroom in chatrooms:
@@ -29,7 +30,7 @@ def index(request):
     name = request.path.rsplit('/', 1)[1]
     chat_room = []
     for room in ChatRoom.objects.filter(main=name).all():
-        users = len(room.subscribers.all())
+        users = len(Profile.objects.filter(chat_room_name=room.name))
         chat_room.append((room, users))
     context = {
         'chat_list': chat_room,
@@ -55,15 +56,17 @@ def create_room(request):
 
 def chat_room(request, chat_room_id):
     chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
-    room = ChatRoom.objects.get(pk=chat_room_id)
+    # room = ChatRoom.objects.get(pk=chat_room_id)
+    request.user.profile.chat_room_name = chatroom.name
+    active = Profile.objects.filter(chat_room_name=chatroom.name)
     context = {
         'chatroom': chatroom,
-        'subs': room.subscribers.all(),
-        'rooms': room.name,
-        'queues': QUEUES,
+        'subs': active,
+        'rooms': chatroom.name,
+        # 'queues': QUEUES,
     }
     if request.user.profile:
-        room.add_subscriber(request.user.profile)
+        chatroom.add_subscriber(request.user.profile)
         QUEUES[chatroom.name][request.user.username] = queue.Queue()
 
     return render(request, 'chat/chat_room.html', context)
