@@ -60,7 +60,7 @@ class Profile(models.Model):
 
     def room_status(self, name=None):
         if self.chat_room_name:
-            self.Created_room = True
+            self.own_room = True
         else:
             self.chat_room_name = name
-        return self.Created_room
+        return self.own_room
