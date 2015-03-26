@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, ListView
 from django.core.urlresolvers import reverse_lazy
 from chat.models import ChatRoom
+from django.contrib.auth.models import User
 
 @login_required
 def profile(request):
@@ -17,20 +18,21 @@ def profile(request):
 
 @login_required
 def other_profile(request, slug):
-    context = {}
-    if request.user.username == slug:
-        return redirect("/profile/")
-    try:
-        profile = Profile.objects.get(slug=slug)
-        context['profile'] = profile
-        context['friends'] = profile.get_friends()
-        context['active_chats'] = ChatRoom.objects.filter(subscribers=profile)
-        context['owned_chats'] = ChatRoom.objects.filter(owner=profile)
-    except Profile.DoesNotExist:
-        pass
-
-
-    return render(request, 'profiles/other_profile.html', context)
+    if Profile.objects.get(slug=slug):
+        context = {}
+        if request.user.username == slug:
+            return redirect("/profile/")
+        try:
+            profile = Profile.objects.get(slug=slug)
+            context['profile'] = profile
+            context['friends'] = profile.get_friends()
+            context['active_chats'] = ChatRoom.objects.filter(subscribers=profile)
+            context['owned_chats'] = ChatRoom.objects.filter(owner=profile)
+        except Profile.DoesNotExist:
+            pass
+        return render(request, 'profiles/other_profile.html', context)
+    else:
+        return redirect('/')
 
 @login_required
 def make_friends(request, pk):

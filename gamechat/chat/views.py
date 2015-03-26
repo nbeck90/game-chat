@@ -1,5 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.html import escape
 from django.http import JsonResponse
 from django.db import IntegrityError
 from chat.models import ChatRoom
@@ -8,7 +9,7 @@ from gevent import queue
 
 QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
 
-list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
+list_of_games = ['ssb', 'wow', 'lol', 'cs', 'destiny',
                  'mine', 'hearth', 'dota', 'diablo',
                  'local']
 
@@ -16,7 +17,7 @@ list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
 def check_queues():
     chatrooms = ChatRoom.objects.all()
     for chatroom in chatrooms:
-        if chatroom.main in list_of_queus:
+        if chatroom.main in list_of_games:
             QUEUES[chatroom.name] = {}
 
 chatrooms = ChatRoom.objects.all()
@@ -27,15 +28,18 @@ for chatroom in chatrooms:
 @csrf_exempt
 def index(request):
     name = request.path.rsplit('/', 1)[1]
-    chat_room = []
-    for room in ChatRoom.objects.filter(main=name).all():
-        users = len(room.subscribers.all())
-        chat_room.append((room, users))
-    context = {
-        'chat_list': chat_room,
-        'channel': name,
-    }
-    return render(request, 'chat/index.html', context)
+    if name in list_of_games:
+        chat_room = []
+        for room in ChatRoom.objects.filter(main=name).all():
+            users = len(room.subscribers.all())
+            chat_room.append((room, users))
+        context = {
+            'chat_list': chat_room,
+            'channel': name,
+        }
+        return render(request, 'chat/index.html', context)
+    else:
+        return redirect('/') 
 
 
 @csrf_exempt
@@ -52,7 +56,7 @@ def create_room(request):
             new_room.main = main
             new_room.save()
             QUEUES[name] = {}
-            return redirect('/chat/room/'+str(new_room.pk))
+            return redirect('/chat/room/' + str(new_room.pk))
     except IntegrityError, AttributeError:
         pass
     return redirect('/chat/' + main)
@@ -77,10 +81,11 @@ def chat_room(request, chat_room_id):
 @csrf_exempt
 def chat_add(request, chat_room_id):
     message = request.POST.get('message')
-    chat_room = ChatRoom.objects.get(pk=chat_room_id).name
-    for prof in QUEUES[chat_room]:
-        msg = "{}:    {}".format(request.user.username, message)
-        QUEUES[chat_room][prof].put_nowait(msg)
+    if message:
+        chat_room = ChatRoom.objects.get(pk=chat_room_id).name
+        for prof in QUEUES[chat_room]:
+            msg = "{}: {}".format(request.user.username, message)
+            QUEUES[chat_room][prof].put_nowait(msg)
 
     return JsonResponse({'message': message})
 
@@ -91,9 +96,10 @@ def chat_messages(request, chat_room_id):
     try:
         q = QUEUES[chat_room][request.user.username]
         msg = q.get(timeout=1)
+        msg = escape(msg)
         name = msg.split()[0][:-1]
         if request.user.profile.blocking.filter(user__username=name):
-            msg = ["{}:    {}".format(name, 'blocked')]
+            msg = ["{}: {}".format(name, 'blocked')]
     except queue.Empty:
         msg = []
 
