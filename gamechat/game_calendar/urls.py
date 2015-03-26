@@ -12,6 +12,6 @@ urlpatterns = patterns('',
                            name='event_feed'),
                        url(r'^create_event/$', login_required(views.EventCreate.as_view(
                            template_name="game_calendar/create_form.html",
-                           success_url='/profile/')),
+                           success_url='/calendar/')),
                            name='create_form'),
                        )
