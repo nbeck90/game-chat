@@ -13,6 +13,9 @@
 </a>
 </div>
 <div id='profile_info'>
+    {% if profile.chat_room %}
+        <a href='{% url 'chat_room' profile.chat_room.pk %}'> Click here to go to your chat room! </a>
+    {% endif %}
     {% if profile.friends.count > 0 %}
         <h2>{{ profile }}'s friends:</h2>
         <ul>
