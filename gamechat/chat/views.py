@@ -14,6 +14,9 @@ class QueueContainer(object):
             cls._instance = self
         return cls._instance
 
+    def __repr__(self):
+        return "{}: {}".format(id(self._container), str(self._container))
+
     def __init__(self, *args, **kwargs):
         self._container = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
 
