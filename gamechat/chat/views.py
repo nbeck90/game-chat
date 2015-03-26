@@ -2,7 +2,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from chat.models import ChatRoom
-from gamecaht.urls import QUEUES
+from gamechat.urls import QUEUES
 from gevent import queue
 
 
