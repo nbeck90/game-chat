@@ -3,7 +3,7 @@
 {% block content %}
 
 <div id='profile_pic'>
-    <img src='{{profile.picture.url}}' max-height="300" max-width="300">
+    <img src='{{profile.picture.url}}' max-height="30px" max-width="30px">
     <br />
 </div>
 <div id='profile'>
@@ -47,7 +47,7 @@
     {% endif %}
     {% if profile.requesting_friend.count > 0 %}
         <h2>these users want to be your friend:</h2>
-        <ul>
+        <ul id='pending_friends'>
             {% for potential_friend in profile.requesting_friend.all %}
                 <ul>
                     {{ potential_friend }}

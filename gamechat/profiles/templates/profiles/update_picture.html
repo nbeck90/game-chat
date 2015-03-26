@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
-<form enctype="multipart/form-data" method="post">{% csrf_token %}
-    <img src= '{{picture_url}}' max-height="300" max-width="300">
-    {{ form.as_p }}
-    <input type="submit" value="Update" />
+<form enctype="multipart/form-data" method="post" id='edit_photo'>{% csrf_token %}
+    <div id='profile_pic_edit'>
+        <img src= '{{picture_url}}' max-height="300" max-width="300">
+        {{ form.as_p }}
+        <input type="submit" value="Update" />
+    </div>
 </form>
 {% endblock %}
