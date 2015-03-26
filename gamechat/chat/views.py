@@ -84,6 +84,8 @@ def chat_add(request, chat_room_id):
     if message:
         chat_room = ChatRoom.objects.get(pk=chat_room_id).name
         for prof in QUEUES[chat_room]:
+            message = unicode(message)
+            message = message.encode('utf-8')
             msg = "{}: {}".format(request.user.username, message)
             QUEUES[chat_room][prof].put_nowait(msg)
 
