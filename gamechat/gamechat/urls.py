@@ -4,6 +4,12 @@ from gamechat import settings
 from django.conf import settings as dcs
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from chat_container import QueueContainer
+
+
+QUEUES = QueueContainer()
+
+
 admin.autodiscover()
 
 
