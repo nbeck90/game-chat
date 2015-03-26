@@ -30,7 +30,8 @@ def index(request):
     name = request.path.rsplit('/', 1)[1]
     chat_room = []
     for room in ChatRoom.objects.filter(main=name).all():
-        chat_room.append(room)
+        users = len(room.subscribers.all())
+        chat_room.append((room, users))
     context = {
         'chat_list': chat_room,
         'channel': name,

@@ -3,12 +3,13 @@
 <h1>Avaliable Chat Rooms for {{ channel }}</h1>
 {% if chat_list %}
 <ul>
-    <ul>{% for chat in chat_list %}</ul>
+    <ul>{% for chat, user in chat_list %}</ul>
 </ul>
 
 <ul>
     <ul>
-    <li><a id="" href="room/{{ chat.pk }}">  {{chat.name}} </a></li>
+    <li><a id="" href="room/{{ chat.pk }}">{{chat}}: &nbsp; &nbsp; active users
+    {{ user }}</a></li>
     </ul>
 </ul>
 
