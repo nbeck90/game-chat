@@ -38,7 +38,7 @@ def index(request, name):
         }
         return render(request, 'chat/index.html', context)
     else:
-        return redirect('four')
+        return redirect('/')
 
 
 @csrf_exempt
