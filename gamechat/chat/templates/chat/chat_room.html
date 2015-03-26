@@ -9,8 +9,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
-            console.log({{chatroom.pk}})
-
             $('#newmessage').submit(function(e) {
                 var message = $("#messageinput").val();
                 $.ajax({
@@ -23,8 +21,6 @@
                 $("#messageinput").focus();
                 e.preventDefault();
             });
-
-
             var longPoll = function() {
               return $.ajax({
                 type: "POST",
@@ -47,7 +43,7 @@
 </head>
 <body>
 <h1 id='room_title'>{{chatroom}}</h1>
-<form id="newmessage"> {% csrf_token %}
+<form id="newmessage">
         <input id="messageinput"></input>
 </form>
 <div id='chat_holder'>
@@ -59,7 +55,6 @@
         </ul>
     </div>
     {% for queue in queues %}
-    <p>This is the list of q objects</p>
     <p>{{queue}}</p>
     {% endfor %}
     <div id='room_info'>
