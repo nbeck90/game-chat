@@ -30,7 +30,7 @@
     {% endif %}
     {% if profile.friends.count > 0 %}
         <h2>{{ profile }}'s friends:</h2>
-        <ul>
+        <ul id='pending_friends'>
             {% for friend in profile.get_friends %}
                 <ul>
                     <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
