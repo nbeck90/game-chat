@@ -2,58 +2,62 @@
 {% load staticfiles %}
 {% block content %}
 {% load thumbnail %}
-<h1>{{ profile }}</h1>
-
-{% thumbnail profile.picture "300x300" as im %}
-    <img src="{{ im.url }}">
-{% endthumbnail %}
-
-{% if profile.friends.count > 0 %}
-    <h2>{{ profile }}'s friends:</h2>
-    <ul>
-        {% for friend in profile.get_friends %}
-            <ul>
-                <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
-            </ul>
-        {% endfor %}
-    </ul>
-{% endif %}
-{% if profile.requested_friends.count > 0 %}
-    <h2>You want to be their friend!</h2>
-    <ul>
-        {% for potential_friend in profile.requested_friends.all %}
-            <ul>
-                <a href="/profile/{{ potential_friend.user.username }}"> {{ potential_friend }} </a>
-            </ul>
-        {% endfor %}
-    </ul>
-{% else %}
-    <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
-{% endif %}
-{% if profile.requesting_friends.count > 0 %}
-    <h2>these losers desperately want to be your friend:</h2>
-    <ul>
-        {% for potential_friend in profile.requesting_friend.all %}
-            <ul>
-                {{ potential_friend }}
-                <a href="/profile/add_friend/{{potential_friend.pk}}">
-                    <button>accept friendship</button>
-                </a>
-            </ul>
-        {% endfor %}    
-    </ul>
-{% endif %}
-{% if profile.blocking.count > 0 %}
-    <h2>{{ profile }} is blocking:</h2>
-    <ul>
-        {% for blocked in profile.blocking.all %}
-            <li>
-                <a href="/profile/{{blocked.user.username}}">{{ blocked }}</a>
-                <a href="/profile/unblock/{{blocked.pk}}">
-                    <button>unblock</button>
-                </a>
-            </li>
-        {% endfor %}
-    </ul>
-{% endif %}
+<div id='profile'>
+    <h1>Welcome, {{ profile }}!</h1>
+</div>
+<div id='profile_pic'>
+    {% thumbnail profile.picture "300x300" as im %}
+        <img src="{{ im.url }}">
+    {% endthumbnail %}
+</div>
+<div id='profile_info'>
+    {% if profile.friends.count > 0 %}
+        <h2>{{ profile }}'s friends:</h2>
+        <ul>
+            {% for friend in profile.get_friends %}
+                <ul>
+                    <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
+                </ul>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if profile.requested_friends.count > 0 %}
+        <h2>You want to be their friend!</h2>
+        <ul id='pending_friends'>
+            {% for potential_friend in profile.requested_friends.all %}
+                <ul>
+                    <a href="/profile/{{ potential_friend.user.username }}"> {{ potential_friend }} </a>
+                </ul>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <a href='{% url 'home' %}'> <h2>Join a chat to make some friends! </h2> </a>
+    {% endif %}
+    {% if profile.requesting_friends.count > 0 %}
+        <h2>these losers desperately want to be your friend:</h2>
+        <ul>
+            {% for potential_friend in profile.requesting_friend.all %}
+                <ul>
+                    {{ potential_friend }}
+                    <a href="/profile/add_friend/{{potential_friend.pk}}">
+                        <button>accept friendship</button>
+                    </a>
+                </ul>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    {% if profile.blocking.count > 0 %}
+        <h2>You are blocking:</h2>
+        <ul>
+            {% for blocked in profile.blocking.all %}
+                <li>
+                    <a href="/profile/{{blocked.user.username}}">{{ blocked }}</a>
+                    <a href="/profile/unblock/{{blocked.pk}}">
+                        <button>unblock</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
 {% endblock %}
