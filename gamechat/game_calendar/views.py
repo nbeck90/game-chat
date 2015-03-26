@@ -8,7 +8,7 @@ from django.db.models import Q
 
 class EventCreate(CreateView):
     model = Event
-    form_class = EventForm 
+    form_class = EventForm
 
     def get_initial(self):
         initial = super(EventCreate, self).get_initial()

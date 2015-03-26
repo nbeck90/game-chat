@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block content %}
+<div id='not_found'>
+    <h1>Good Try! But no Easter Eggs for you</h1>
+    <h2>Try one of the Channels</h2>
+</div>
+<div id='game_holder'>
+    {% for image, title, chat in games %}
+        <div class='front_page_game'><a href={{ chat }}><img src={{ image }} class='game_image'><h3 class="game_text">{{ title }}</a></h3></div>
+    {% endfor %}
+</div>
+{% endblock %}

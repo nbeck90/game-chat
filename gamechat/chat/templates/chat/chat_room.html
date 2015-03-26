@@ -56,9 +56,9 @@
     </div>
     <div id='room_info'>
         </button>
-        Subscribrs for this room:
+        <h3>Subscribers for this room:</h3>
         {% for sub in subs %}
-        <p>{{sub}}</p>
+        <a href="/profile/{{ sub }}">{{sub}}</a></p>
         {% endfor %}
         <br>
         </body>

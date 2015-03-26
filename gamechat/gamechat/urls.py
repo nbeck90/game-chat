@@ -4,6 +4,12 @@ from gamechat import settings
 from django.conf import settings as dcs
 from django.conf.urls.static import static
 from django.views.generic import RedirectView
+from chat.chat_container import QueueContainer
+
+
+QUEUES = QueueContainer()
+
+
 admin.autodiscover()
 
 
@@ -15,6 +21,7 @@ urlpatterns = patterns('',
     url(r'^calendar/', include('game_calendar.urls')),
     url(r'^accounts/', include('registration.backends.default.urls')),
     url(r'^accounts/profile', RedirectView.as_view(url='/profile/')),
+    # url(r'^.*$', 'gamechat.views.four_o_four', name='four'),
 )
 if settings.DEBUG:
     urlpatterns += static(dcs.MEDIA_URL, document_root=dcs.MEDIA_ROOT)
