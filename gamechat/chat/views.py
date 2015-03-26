@@ -1,77 +1,49 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, get_object_or_404
 from django.http import JsonResponse
-from django.db import IntegrityError
 from chat.models import ChatRoom
 from gevent import queue
 
 
-QUEUES = {
-          'Chat Room': {'User': queue.Queue(), },
-          }
+QUEUES = {'Test Chat Room 1': {'generic': queue.Queue(), }, }
+
+chatrooms = ChatRoom.objects.all()
+for chatroom in chatrooms:
+    QUEUES[chatroom.name] = {}
 
 
-list_of_queus = ['ssb', 'wow', 'lol', 'cs', 'destiny',
-                 'mine', 'hearth', 'dota', 'diablo',
-                 'local']
-
-
-def check_queues():
-    chatrooms = ChatRoom.objects.all()
-    for chatroom in chatrooms:
-        if chatroom.main in list_of_queus:
-            QUEUES[chatroom.name] = {}
-
-
-@csrf_exempt
 def index(request):
-    name = request.path.rsplit('/', 1)[1]
-    chat_room = []
-    for room in ChatRoom.objects.filter(main=name).all():
-        chat_room.append(room)
+    chat_rooms = ChatRoom.objects.order_by('name')[:10]
     context = {
-        'chat_list': chat_room,
-        'channel': name,
+        'chat_list': chat_rooms,
     }
     return render(request, 'chat/index.html', context)
 
 
 @csrf_exempt
 def create_room(request):
-    try:
-        main = request.path.rsplit('/', 2)[-1]
-        name = request.POST.get('Enter a New Room Name')
-        new_room = ChatRoom()
-        new_room.name = name
-        if main in list_of_queus:
-            new_room.main = main
-        new_room.owner = request.user.profile
-        new_room.save()
-        QUEUES[name] = {}
-        check_queues()
-        return chat_room(request, new_room.pk)
-    except IntegrityError:
-        return redirect('/')
+    name = request.POST.get('Enter a New Room Name')
+    new_room = ChatRoom()
+    new_room.name = name
+    new_room.owner = request.user.profile
+    new_room.save()
+    QUEUES[name] = {}
+    return chat_room(request, new_room.pk)
 
 
-@csrf_exempt
 def chat_room(request, chat_room_id):
+    chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
     room = ChatRoom.objects.get(pk=chat_room_id)
-    room_name = str(room.name)
-    user = request.user.username
     context = {
-        'chatroom': room,
+        'chatroom': chatroom,
         'subs': room.subscribers.all(),
         'rooms': room.name,
         'queues': QUEUES,
     }
-    # print "test"
-    # print request.user.profile
     if request.user.profile:
         room.add_subscriber(request.user.profile)
-        check_queues()
-        QUEUES[room_name].update({user: queue.Queue()})
+        QUEUES[chatroom.name][request.user.username] = queue.Queue()
 
     return render(request, 'chat/chat_room.html', context)
 
@@ -79,27 +51,21 @@ def chat_room(request, chat_room_id):
 @csrf_exempt
 def chat_add(request, chat_room_id):
     message = request.POST.get('message')
-    chat_room = ChatRoom.objects.get(pk=chat_room_id)
-    chat_room_name = chat_room.name
-    user = request.user.username
-    for prof in QUEUES[chat_room_name]:
-        msg = "{}:    {}".format(user, message)
-        QUEUES.get(chat_room_name).get(user).put_nowait(msg)
+    chat_room = ChatRoom.objects.get(pk=chat_room_id).name
+    for prof in QUEUES[chat_room]:
+        msg = "{}:    {}".format(request.user.username, message)
+        QUEUES[chat_room][prof].put_nowait(msg)
 
     return JsonResponse({'message': message})
 
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
-    chat_room = ChatRoom.objects.get(pk=chat_room_id)
-    chat_room_name = chat_room.name
-    user = request.user.username
-    # print request.user.username
-    # print QUEUES[chat_room_name][user]
-    # check_queues()
-    # print QUEUES
+    chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
-        msg = QUEUES.get(chat_room_name).get(user).get(timeout=10)
+        q = QUEUES[chat_room][request.user.username]
+        print request.user.username
+        msg = q.get(timeout=1)
     except queue.Empty:
         msg = []
 
@@ -110,10 +76,7 @@ def chat_messages(request, chat_room_id):
     return JsonResponse(data)
 
 
-@csrf_exempt
 def delete_chatroom(request, chat_room_id):
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
-        channel = ChatRoom.objects.get(pk=chat_room_id).main
         ChatRoom.objects.get(pk=chat_room_id).delete()
-        url = '/chat/' + channel
-    return redirect(url)
+    return redirect('/chat/')
