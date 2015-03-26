@@ -11,6 +11,7 @@
         <a href='{% url 'chat_room' profile.chat_room.pk %}'> Click here to go to {{ profile }}'s chat room! </a>
     {% endif %}
     {% if profile not in user.profile.blocking.all %}
+    <br>
     <a href="/profile/block/{{profile.pk}}"><button>Block User</button></a>
     {% endif %}
     {% if user.profile in profile.friends.all %}
