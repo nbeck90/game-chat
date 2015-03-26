@@ -14,7 +14,7 @@
     - git
 
 - name: Clone Django Repository
-  git: repo=https://github.com/nbeck90/game-chat.git version=805a1984354d98782b781db69307bd41b6704371 dest={{ django_home }} force=yes
+  git: repo=https://github.com/nbeck90/game-chat.git dest={{ django_home }} force=yes
 
 - name: Install Python Dependencies
   sudo: yes
