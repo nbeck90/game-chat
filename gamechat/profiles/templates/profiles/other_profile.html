@@ -10,27 +10,17 @@
     {% if profile.chat_room %}
         <a href='{% url 'chat_room' profile.chat_room.pk %}'> Click here to go to {{ profile }}'s chat room! </a>
     {% endif %}
+    {% if profile not in user.profile.blocking.all %}
+    <a href="/profile/block/{{profile.pk}}"><button>Block User</button></a>
+    {% endif %}
     {% if user.profile in profile.friends.all %}
     	<h1>You two are friends! How nice.</h1>
-        {% if active_chats %}
-            <h1>{{ profile }} is currently in:</h1>
-        	{% for chat in active_chats %}
-        		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
-        	{% endfor %}
-        {% endif %}
-    	{% for chat in owned_chats %}
-    		<h1>{{ profile }} owns this chatroom:</h1>
-    		<a href="/chat/{{chat.pk}}"><p>{{chat}}</p></a>
-    	{% endfor %}
     {% else %}
     	<a href="/profile/request_friend/{{profile.pk}}"><button>request friendship</button></a>
     {% endif %}
-    {% if profile not in user.profile.blocking.all %}
-    	<a href="/profile/block/{{profile.pk}}"><button>block</button></a>
-    {% endif %}
     {% if profile.friends.count > 0 %}
         <h2>{{ profile }}'s friends:</h2>
-        <ul>
+        <ul id='pending_friends'>
             {% for friend in profile.get_friends %}
                 <ul>
                     <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
