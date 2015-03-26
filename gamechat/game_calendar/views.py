@@ -1,10 +1,17 @@
 from game_calendar.models import Event
+from profiles.models import Profile
 from django.shortcuts import render
 from django.views.generic.edit import CreateView
 
 
 class EventCreate(CreateView):
     model = Event
+    fields = ['title', 'date']
+
+    def form_valid(self, form):
+        form.instance.creator = Profile.objects.get(
+            pk=self.request.user.id)
+        return super(EventCreate, self).form_valid(form)
 
 
 def return_event(request):
