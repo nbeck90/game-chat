@@ -43,7 +43,6 @@ INSTALLED_APPS = (
     'game_calendar',
     'profiles',
     'registration',
-    'sorl.thumbnail',
 )
 
 MIDDLEWARE_CLASSES = (
