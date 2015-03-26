@@ -71,7 +71,9 @@ class SpecialCal(HTMLCalendar):
                         body.append('</a>')
                     body.append('</ul>')
                     return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
-
+                alink = "<a href='/calendar/%s/%s/%s/'>" % (day, self.month, self.year)
+                day = alink+"%s</a>" % (day)
+                print day
                 return self.day_cell(cssclass, day)
             return self.day_cell('noday', '&nbsp;')
 

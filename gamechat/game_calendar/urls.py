@@ -3,7 +3,7 @@ import views
 from django.contrib.auth.decorators import login_required
 
 urlpatterns = patterns('',
-    url(r'^(?P<day>\d{2})/(?P<month>\d{2})/(?P<year>\d{4})/$',
+    url(r'^(?P<day>\d+)/(?P<month>\d+)/(?P<year>\d{4})/$',
         views.day_detail,
         name="day_detail"),
     url(r'^(?P<month>\d{2})/(?P<year>\d{4})/$', views.calendar, name='calendar_view'),
