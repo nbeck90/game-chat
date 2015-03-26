@@ -1,1 +1,1 @@
-default_app_config = "chat.app.GameChatConfig"
+default_app_config = "chat.app.ChatConfig"
