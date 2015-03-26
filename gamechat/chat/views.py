@@ -99,7 +99,7 @@ def chat_messages(request, chat_room_id):
     # check_queues()
     # print QUEUES
     try:
-        msg = QUEUES[chat_room_name][user].get(timeout=10)
+        msg = QUEUES.get(chat_room_name).get(user).get(timeout=10)
     except queue.Empty:
         msg = []
 
