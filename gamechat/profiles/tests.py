@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.test import Client
 import factory
 from unittest import skip
+from game_calendar.models import Event
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -13,6 +14,14 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     username = 'bob'
     password = factory.PostGenerationMethodCall('set_password', 'password')
+
+
+class EventFactory(factory.django.DjangoModelFactory):
+
+    class Meta:
+        model = Event
+
+    creator = UserFactory.create().profile
 
 
 class ProfileCreationTests(TestCase):
@@ -87,6 +96,7 @@ class ProfileViewsTests(TestCase):
     def setUp(self):
         self.bob = UserFactory.create()
         self.bob_profile = self.bob.profile
+        self.bob_event = EventFactory.create(creator=self.bob_profile)
         self.alice = UserFactory.create(username='alice')
         self.alice_profile = self.alice.profile
         self.toby = UserFactory.create(username='toby')
@@ -154,13 +164,7 @@ class ProfileViewsTests(TestCase):
         self.assertNotIn(self.alice_profile, self.bob_profile.blocking.all())
 
     def test_accept_invite(self):
-        self.client.login(username='bob', password='password')
-        self.client.post(
-            '/calendar/create_event/',
-            {'title': "bob's new event",
-             'date': "2015-03-02",
-             'invitees': 'alice'}
-            )
-
-    def test_update_picture(self):
-        pass
+        self.client.login(username='alice', password='password')
+        self.bob_event.invitees.add(self.alice_profile)
+        self.client.get('/profile/accept_invite/%s' % Event.objects.all()[0].pk)
+        self.assertIn(self.alice_profile, Event.objects.all()[0].attending.all())
