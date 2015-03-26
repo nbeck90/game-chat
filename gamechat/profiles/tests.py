@@ -132,24 +132,35 @@ class ProfileViewsTests(TestCase):
 
     def test_request_friend(self):
         self.client.login(username='bob', password='password')
-        response = self.client.post('/profile/request_friend/40')
+        self.client.post('/profile/request_friend/%s' % (self.alice_profile.pk))
         self.assertIn(self.alice_profile, self.bob_profile.requested_friends.all())
-        response = self.client.post('/profile/')
-        self.assertContains(response, text)
 
     def test_add_friend(self):
         self.client.login(username='bob', password='password')
-        response = self.client.post('/profile/request_friend/40')
-        self.assertIn(self.alice_profile, self.bob_profile.requested_friends.all())
+        self.alice_profile.pk
+        self.client.post('/profile/request_friend/%s' % (self.alice_profile.pk))
+        self.client.post('/profile/add_friend/%s' % (self.alice_profile.pk))
+        self.assertIn(self.alice_profile, self.bob_profile.friends.all())
 
     def test_block_view(self):
-        pass
+        self.client.login(username='bob', password='password')
+        self.client.post('/profile/block/%s' % (self.alice_profile.pk))
+        self.assertIn(self.alice_profile, self.bob_profile.blocking.all())
 
     def test_unblock_view(self):
-        pass
+        self.client.login(username='bob', password='password')
+        self.client.post('/profile/block/%s' % (self.alice_profile.pk))
+        self.client.post('/profile/unblock/%s' % (self.alice_profile.pk))
+        self.assertNotIn(self.alice_profile, self.bob_profile.blocking.all())
 
     def test_accept_invite(self):
-        pass
+        self.client.login(username='bob', password='password')
+        self.client.post(
+            '/calendar/create_event/',
+            {'title': "bob's new event",
+             'date': "2015-03-02",
+             'invitees': 'alice'}
+            )
 
     def test_update_picture(self):
         pass

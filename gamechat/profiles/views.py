@@ -61,6 +61,7 @@ def unblock_asshole(request, pk):
     request.user.profile.blocking.remove(prof)
     return redirect('/profile/'+prof.user.username)
 
+
 @login_required
 def accept_invitation(request, pk):
     profile = request.user.profile
