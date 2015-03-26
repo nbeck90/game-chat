@@ -143,6 +143,8 @@ FRONT PAGE
 }
 
 #profile {
+    margin-top: -50px;
+    margin-bottom: -40px;
     text-align: center;
     font-family: 'Lato', sans-serif;
     float: center;
@@ -150,15 +152,32 @@ FRONT PAGE
 }
 
 #profile_pic {
+    margin: 0 auto;
+    padding-left: 135px;
+    margin-top: 20px;
+    width: 50%
+}
+
+#profile_edit{
+    float: left;
+    width: 40%;
+    padding-left: 135px;
+    margin-top: -3px;
+}
+
+#chat_link {
     float: right;
+    width: 30%;
+    padding-right: 90px;
+    margin-top: -3px;
 }
 
 #profile_info {
-    margin-left: 20px;
-    text-align: left;
+    float: center;
+    text-align: center;
+    width: 50%;
 }
 
 #profile_info ul{
-    margin-left: 20px;
-    text-align: left;
+    text-align: center;
 }
