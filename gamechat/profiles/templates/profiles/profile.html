@@ -62,5 +62,18 @@
             {% endfor %}
         </ul>
     {% endif %}
+    {% if events.count > 0 %}
+        <h2>You have been invited to join:</h2>
+        <ul>
+            {% for event in events %}
+                <li>
+                    {{ event.title }}
+                    <a href="/profile/accept_invite/{{ event.pk }}">
+                        <button>accept invite</button>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 </div>
 {% endblock %}
