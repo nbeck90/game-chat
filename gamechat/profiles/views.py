@@ -9,6 +9,9 @@ from chat.models import ChatRoom
 
 @login_required
 def profile(request):
+    """
+    View the user's own profile
+    """
     profile = request.user.profile
     context = {
         'profile': profile,
@@ -19,6 +22,9 @@ def profile(request):
 
 @login_required
 def other_profile(request, slug):
+    """
+    View another user's profile
+    """
     context = {}
     if request.user.username == slug:
         return redirect(reverse("profile"))
@@ -35,12 +41,18 @@ def other_profile(request, slug):
 
 @login_required
 def make_friends(request, pk):
+    """
+    Request another user's friendship
+    """
     request.user.profile.requested_friends.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
 
 
 @login_required
 def add_friend(request, pk):
+    """
+    Adding two users as friends
+    """
     prof = Profile.objects.get(pk=pk)
     request.user.profile.friends.add(prof)
     request.user.profile.requesting_friend.remove(prof)
@@ -57,12 +69,18 @@ def unfriend(request, pk):
 
 @login_required
 def block_asshole(request, pk):
+    """
+    Blocking another user
+    """
     request.user.profile.blocking.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')
 
 
 @login_required
 def unblock_asshole(request, pk):
+    """
+    Unblock another user that has been blocked
+    """
     prof = Profile.objects.get(pk=pk)
     request.user.profile.blocking.remove(prof)
     return redirect('/profile/' + prof.user.username)
@@ -70,6 +88,9 @@ def unblock_asshole(request, pk):
 
 @login_required
 def accept_invitation(request, pk):
+    """
+    Accepting an event set by another user
+    """
     profile = request.user.profile
     event = Event.objects.get(pk=pk)
     event.attending.add(profile)
@@ -86,6 +107,9 @@ def deny_invitation(request, pk):
 
 
 class update_picture(UpdateView):
+    """
+    Update a user's profile picture
+    """
     def get_context_data(self, *args, **kwargs):
         default = super(UpdateView, self).get_context_data(*args, **kwargs)
         profile = Profile.objects.get(pk=self.kwargs['pk'])
@@ -107,4 +131,7 @@ class update_picture(UpdateView):
 
 
 class ListProfiles(ListView):
+    """
+    Listing all users that are registered
+    """
     model = Profile

@@ -6,27 +6,24 @@ from django.db.models import permalink
 
 
 class Profile(models.Model):
+    """
+    Profile model with friending, blocking, slug, and picture features
+    """
     user = models.OneToOneField(User, related_name='profile')
     friends = models.ManyToManyField('Profile', symmetrical=True,
                                      related_name='friends', null=True,
                                      blank=True)
-
     blocking = models.ManyToManyField('Profile', symmetrical=False,
                                       related_name='blocked_by', null=True,
                                       blank=True)
-
     requested_friends = models.ManyToManyField('Profile',
                                                symmetrical=False,
                                                related_name='requesting_friend',
                                                null=True, blank=True)
-
     picture = models.ImageField(
         upload_to='photos/', null=True, blank=True, default='photos/link.jpg')
-
     slug = models.CharField(max_length=32, unique=True, blank=True)
-
     own_room = models.BooleanField(default=False)
-
     chat_room_name = models.CharField(max_length=64,
                                       blank=True, null=True)
 

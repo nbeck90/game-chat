@@ -3,7 +3,9 @@ from profiles.models import Profile
 
 
 class Event(models.Model):
-
+    """
+    Event model for the calander app with users attending and invited users
+    """
     creator = models.ForeignKey(Profile, related_name='created_events')
     title = models.CharField(max_length=200, null=False, blank=False)
     date = models.DateField(default='2015-01-01')
