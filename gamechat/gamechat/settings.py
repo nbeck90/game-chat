@@ -63,19 +63,19 @@ WSGI_APPLICATION = 'gamechat.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default='postgres://postgres:@localhost:5432/game_chat_db'
-    )
-}
-
 # DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'game_chat_db',
-#         'USER': os.environ.get('USER'),
-#     }
+#     'default': dj_database_url.config(
+#         default='postgres://postgres:@localhost:5432/game_chat_db'
+#     )
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'game_chat_db',
+        'USER': os.environ.get('USER'),
+    }
+}
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
