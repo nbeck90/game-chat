@@ -64,23 +64,25 @@ def create_room(request, main):
 
 
 def chat_room(request, chat_room_id):
-    chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
-    # room = ChatRoom.objects.get(pk=chat_room_id)
-    user = Profile.objects.get(user=request.user)
-    user.chat_room_name = chatroom.name
-    user.save()
-    active = Profile.objects.filter(chat_room_name=chatroom.name)
-    context = {
-        'chatroom': chatroom,
-        'subs': active,
-        'rooms': chatroom.name,
-        # 'queues': QUEUES,
-    }
-    if request.user.profile:
-        chatroom.add_subscriber(request.user.profile)
-        QUEUES[chatroom.name][request.user.username] = queue.Queue()
-    return render(request, 'chat/chat_room.html', context)
-
+    try:
+        # chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
+        chatroom = ChatRoom.objects.get(pk=chat_room_id)
+        user = Profile.objects.get(user=request.user)
+        user.chat_room_name = chatroom.name
+        user.save()
+        active = Profile.objects.filter(chat_room_name=chatroom.name)
+        context = {
+            'chatroom': chatroom,
+            'subs': active,
+            'rooms': chatroom.name,
+            # 'queues': QUEUES,
+        }
+        if request.user.profile:
+            chatroom.add_subscriber(request.user.profile)
+            QUEUES[chatroom.name][request.user.username] = queue.Queue()
+        return render(request, 'chat/chat_room.html', context)
+    except ChatRoom.DoesNotExist:
+        return redirect(reverse('four'))
 
 @csrf_exempt
 def chat_add(request, chat_room_id):
