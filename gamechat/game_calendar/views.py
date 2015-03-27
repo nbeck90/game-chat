@@ -45,7 +45,7 @@ def return_event(request):
         print event.creator
         json_entry = {
             'title': event.title,
-            'start': event.date.strftime("%Y-%m-%dT%H:%M:%S"),
+            'start': event.time.strftime("%Y-%m-%dT%H:%M:%S"),
             'allDay': False,
             'pk': str(event.pk)
             }
