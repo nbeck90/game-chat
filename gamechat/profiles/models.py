@@ -50,7 +50,9 @@ class Profile(models.Model):
         return self.friends.remove(other_profile)
 
     def get_friends(self):
-        return Profile.objects.filter(Q(friends=self) & ~Q(blocking=self) & ~Q(blocked_by=self))
+        return Profile.objects.filter(Q(friends=self) &
+                                      ~Q(blocking=self) &
+                                      ~Q(blocked_by=self))
 
     def block(self, other_profile):
         return self.blocking.add(other_profile)

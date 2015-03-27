@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 <div id='user_list'>
-    <h1>Avaliable Chat Rooms for {{ channel }}</h1>
+    <h1>Available Chat Rooms for {{ channel }}</h1>
     {% if chat_list %}
     <ul>
         <ul>{% for chat, user in chat_list %}</ul>

@@ -28,7 +28,8 @@ def return_event(request):
 
     profile = request.user.profile
     json_list = []
-    for event in Event.objects.filter(Q(attending=profile) | Q(creator=profile)):
+    for event in Event.objects.filter(Q(attending=profile) |
+                                      Q(creator=profile)):
         json_entry = {
             'title': event.title,
             'start': event.date.strftime("%Y-%m-%dT%H:%M:%S"),
