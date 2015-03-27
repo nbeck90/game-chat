@@ -21,8 +21,9 @@ class EventCreate(CreateView):
         return super(EventCreate, self).form_valid(form)
 
 
-def event_detail(request):
-    return render(request, 'game_calendar/event_detail.html')
+def event_detail(request, pk):
+    event = Event.objects.get(pk=pk)
+    return render(request, 'game_calendar/event_detail.html', {'event': event})
 
 
 def return_event(request):
@@ -42,8 +43,7 @@ def return_event(request):
             'title': event.title,
             'start': event.date.strftime("%Y-%m-%dT%H:%M:%S"),
             'allDay': False,
-            'attending': attending_list,
-            'creator': event.creator.user.username,
+            'pk': str(event.pk)
             }
         json_list.append(json_entry)
 

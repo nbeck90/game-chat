@@ -1,1 +1,7 @@
-<h1>Hello!</h1>
+<h1>Created by {{ event.creator }}</h1>
+<h1>Attending:</h1>
+<ul>
+{% for attendee in event.attending.all %}
+    <li><h2>{{ attendee }}</h2></li>
+{% endfor %}
+</ul>
