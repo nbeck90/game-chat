@@ -1,5 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.http import JsonResponse
 from django.db import IntegrityError
@@ -38,7 +39,7 @@ def index(request, name):
         }
         return render(request, 'chat/index.html', context)
     else:
-        return redirect('/')
+        return redirect(reverse('four'))
 
 
 @csrf_exempt

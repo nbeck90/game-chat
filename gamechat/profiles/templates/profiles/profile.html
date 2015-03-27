@@ -2,10 +2,12 @@
 {% load staticfiles %}
 {% block content %}
 
+{% if profile.picture %}
 <div id='profile_pic'>
     <img src='{{profile.picture.url}}' max-height="30px" max-width="30px">
     <br />
 </div>
+{% endif %}
 <div id='profile'>
     <h1>Welcome, {{ profile }}!</h1>
 </div>
