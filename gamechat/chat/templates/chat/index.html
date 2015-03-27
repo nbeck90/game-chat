@@ -1,26 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
-<h1>Avaliable Chat Rooms for {{ channel }}</h1>
-{% if chat_list %}
-<ul>
-    <ul>{% for chat, user in chat_list %}</ul>
-</ul>
-
-<ul>
+<div id='user_list'>
+    <h1>Avaliable Chat Rooms for {{ channel }}</h1>
+    {% if chat_list %}
     <ul>
-    <li><a id="" href="room/{{ chat.pk }}">{{chat}}:&nbsp;&nbsp; recent users
-    {{ user }}</a></li>
+        <ul>{% for chat, user in chat_list %}</ul>
     </ul>
-</ul>
 
-<ul>{% endfor %}</ul>
-{% else %}
-    No chats are available.
-{% endif %}
-{% if not user.profile.own_room %}
-<form action="create/room/{{ channel }}"  method="post">
-    <input name="Enter a New Room Name" placeholder='Room Name'></input>
-    <button>Create a Room</button>
-</form>
+    <ul>
+        <ul>
+        <li><a id="" href="room/{{ chat.pk }}">{{chat}}:&nbsp;&nbsp; recent users
+        {{ user }}</a></li>
+        </ul>
+    </ul>
+
+    <ul>{% endfor %}</ul>
+    {% else %}
+        No chats are available.
+    {% endif %}
+    {% if not user.profile.own_room %}
+    <form action="create/room/{{ channel }}"  method="post">
+        <input name="Enter a New Room Name" placeholder='Room Name'></input>
+        <button>Create a Room</button>
+    </form>
+</div>
 {% endif %}
 {% endblock %}
