@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
-{% for profile in object_list %}
-	<a href="/profile/{{profile.user.username}}"><h1>{{profile}}</h1></a>
-{% endfor %}
+<div class='user_list'>
+    {% for profile in object_list %}
+    	<a href="/profile/{{profile.user.username}}"><h1>{{profile}}</h1></a>
+    {% endfor %}
+</div>
 {% endblock %}

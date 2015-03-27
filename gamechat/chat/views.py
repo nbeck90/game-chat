@@ -9,9 +9,9 @@ from gamechat.urls import QUEUES
 from gevent import queue
 
 
-list_of_games = ['ssb', 'wow', 'lol', 'cs', 'destiny',
-                 'mine', 'hearth', 'dota', 'diablo',
-                 'local']
+list_of_games = ['SSB4', 'WoW', 'LoL', 'CSGO', 'Destiny',
+                 'Minecraft', 'Hearthstone', 'Dota2', 'Diablo',
+                 'Local']
 
 # def check_queues():
 #     chatrooms = ChatRoom.objects.all()

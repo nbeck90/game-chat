@@ -216,6 +216,15 @@ FRONT PAGE
     margin-left: -100px;
 }
 
+.registration {
+    text-align: center;
+}
+
+.user_list {
+    text-align: center;
+    font-size: .6em;
+}
+
 /***************
 404
 ***************/
