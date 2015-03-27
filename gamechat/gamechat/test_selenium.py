@@ -2,11 +2,9 @@ from __future__ import print_function
 
 from django.test import LiveServerTestCase
 from selenium import webdriver
-
 import os
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
-
 from django.contrib.auth.models import User
 # from imager_images.models import Photo, Album
 import factory
@@ -30,20 +28,50 @@ class UserFactory(factory.django.DjangoModelFactory):
 class TestLogin(LiveServerTestCase):
 
     def setUp(self):
-        self.driver = webdriver.Firefox()
-        self.driver2 = webdriver.Firefox()
+        self.driver1 = webdriver.Firefox()
+        # self.driver2 = webdriver.Chrome()
         super(TestLogin, self).setUp()
         self.bob = UserFactory.create()
         self.bob_profile = self.bob.profile
 
     def tearDown(self):
-        self.driver.quit()
-        self.driver2.quit()
+        self.driver1.quit()
+        # self.driver2.quit()
         super(TestLogin, self).tearDown()
 
-    def test_dueling_browsers(self):
-        self.driver.get(self.live_server_url)
-        self.driver2.get(self.live_server_url)
+    # def test_dueling_browsers(self):
+    #     self.driver1.get(self.live_server_url)
+    #     self.driver2.get(self.live_server_url)
+
+    def test_chatroom_simple(self):
+        # the user finds his way to homepage, and logs in
+        self.driver1.get(self.live_server_url)
+        self.assertIn('Login', self.driver1.page_source)
+        self.driver1.find_element_by_link_text("Login").click()
+        form = self.driver1.find_element_by_tag_name("form")
+        username_field = self.driver1.find_element_by_id("id_username")
+        username_field.send_keys("bob")
+        password_field = self.driver1.find_element_by_id("id_password")
+        password_field.send_keys("password")
+        form.submit()
+
+        # having logged in, the user sees his profile page.
+        self.assertIn('Logout', self.driver1.page_source)
+        self.assertIn('Welcome, bob!', self.driver1.page_source)
+
+        # wanting to socialize with other nerds, the user goes back
+        # to the homepage to look for chatrooms.
+        self.driver1.self.driver1.find_element_by_link_text("Home").click()
+        self.assertIn('Super Smash Brothers', self.driver1.page_source)
+        self.assertIn('Destiny', self.driver1.page_source)
+
+        # having seen a chatroom he/she'd like to visit, the user
+        # enters the chat list, and looks for rooms.
+        self.driver1.find_element_by_link_text("Destiny").click()
+        self.assertIn('Available Chat Rooms for destiny', self.driver1.page_source)
+        self.assertIn('No chats are available.', self.driver1.page_source)
+
+        # seeing no chat rooms available, the user 
 
     # def test_unauthorized_index(self):
     #     self.driver.get(self.live_server_url)
