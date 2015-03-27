@@ -18,4 +18,6 @@ urlpatterns = patterns('profiles.views',
     url(r'^unblock/(?P<pk>\d+)$', 'unblock_asshole', name='unblock_asshole'),
     url(r'^picture/(?P<pk>\d+)$', login_required(update_picture.as_view()), name='update_picture'),
     url(r'^accept_invite/(?P<pk>\d+)$', 'accept_invitation', name='accept_invitation'),
+    url(r'^deny_invite/(?P<pk>\d+)$', 'deny_invitation', name='deny_invitation'),
+
 )

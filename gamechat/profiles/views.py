@@ -52,7 +52,7 @@ def add_friend(request, pk):
 def unfriend(request, pk):
     prof = Profile.objects.get(pk=pk)
     request.user.profile.unfriending(prof)
-    return redirect('/profile/'+prof.user.username)
+    return redirect('/profile/')
 
 
 @login_required
@@ -75,6 +75,14 @@ def accept_invitation(request, pk):
     event.attending.add(profile)
     event.invitees.remove(profile)
     return redirect('/calendar/')
+
+
+@login_required
+def deny_invitation(request, pk):
+    profile = request.user.profile
+    event = Event.objects.get(pk=pk)
+    event.invitees.remove(profile)
+    return redirect('/profile/')
 
 
 class update_picture(UpdateView):
