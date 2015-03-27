@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% block content %}
-<div id='user_list'>
+<div class='chat_list'>
+    {% if not user.profile.own_room %}
+    <form action="create/room/{{ channel }}"  method="post">
+        <input name="Enter a New Room Name" placeholder='Room Name'></input>
+        <button>Create a Room</button>
+    </form>
+    {% endif %}
     <h1>Available Chat Rooms for {{ channel }}</h1>
     {% if chat_list %}
     <ul>
@@ -18,11 +24,5 @@
     {% else %}
         No chats are available.
     {% endif %}
-    {% if not user.profile.own_room %}
-    <form action="create/room/{{ channel }}"  method="post">
-        <input name="Enter a New Room Name" placeholder='Room Name'></input>
-        <button>Create a Room</button>
-    </form>
 </div>
-{% endif %}
 {% endblock %}
