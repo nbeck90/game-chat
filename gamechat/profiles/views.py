@@ -29,6 +29,7 @@ def other_profile(request, slug):
     if request.user.username == slug:
         return redirect(reverse("profile"))
     try:
+        slug = slug.lower()
         profile = Profile.objects.get(slug=slug)
         context['profile'] = profile
         context['friends'] = profile.get_friends()
