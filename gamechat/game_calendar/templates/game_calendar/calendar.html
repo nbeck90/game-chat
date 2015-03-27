@@ -9,8 +9,11 @@
 $(document).ready(function() {
 
     $('#calendar').fullCalendar({
-        events:"/calendar/event_feed/"
-
+        events:"/calendar/event_feed/",
+        eventClick: function(calEvent){
+              alert('Attending: ' + calEvent.attending + '\nCreated by:' + calEvent.creator)
+              return false;
+            },
     })
 
 });

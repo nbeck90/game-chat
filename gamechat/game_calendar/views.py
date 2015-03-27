@@ -21,6 +21,10 @@ class EventCreate(CreateView):
         return super(EventCreate, self).form_valid(form)
 
 
+def event_detail(request):
+    return render(request, 'game_calendar/event_detail.html')
+
+
 def return_event(request):
     from datetime import datetime
     from django.http import HttpResponse
@@ -30,10 +34,16 @@ def return_event(request):
     json_list = []
     for event in Event.objects.filter(Q(attending=profile) |
                                       Q(creator=profile)):
+        attending_list = []
+        for attendee in event.attending.all():
+            attending_list.append(attendee.user.username)
+        print event.creator
         json_entry = {
             'title': event.title,
             'start': event.date.strftime("%Y-%m-%dT%H:%M:%S"),
-            'allDay': False
+            'allDay': False,
+            'attending': attending_list,
+            'creator': event.creator.user.username,
             }
         json_list.append(json_entry)
 
