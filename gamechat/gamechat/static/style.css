@@ -105,6 +105,10 @@ FRONT PAGE
     height: 20px;
 }
 
+/***************
+CHAT ROOM
+***************/
+
 #chat_window {
     color: black;
     text-align: left;
@@ -149,9 +153,9 @@ FRONT PAGE
     outline:none;
 }
 
-#room_title {
-    margin-left: 31px;
-}
+/***************
+CHAT CSS
+***************/
 
 #profile {
     margin-top: -50px;
@@ -218,6 +222,23 @@ FRONT PAGE
 
 .registration {
     text-align: center;
+}
+
+/***************
+CHAT CSS
+***************/
+
+#room_title {
+    margin-left: 31px;
+}
+
+.chat_list {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.chat_list ul {
+    padding-right: 40px;
 }
 
 .user_list {
