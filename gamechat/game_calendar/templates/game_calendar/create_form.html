@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load staticfiles %}
-<form action="" method="post">{% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Create" />
-</form>
+<div class='registration'>
+    <form action="" method="post">{% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Create" />
+    </form>
+</div>
 {% endblock %}

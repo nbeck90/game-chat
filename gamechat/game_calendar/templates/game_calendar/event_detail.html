@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class='chat_list'>
+    <h1>Created by {{ event.creator }}</h1>
+    <h1>Attending:</h1>
+    <ul>
+    {% for attendee in event.attending.all %}
+        <li><h2>{{ attendee }}</h2></li>
+    {% endfor %}
+    </ul>
+    {% if user.profile == event.creator %}
+        <a href="/calendar/delete_event/{{ event.pk }}"><button>Delete?</button></a>
+    {% endif %}
+</div>
+{% endblock %}

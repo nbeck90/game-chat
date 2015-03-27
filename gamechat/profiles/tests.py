@@ -2,7 +2,6 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 from django.test import Client
 import factory
-from unittest import skip
 from game_calendar.models import Event
 
 
@@ -126,9 +125,12 @@ class ProfileViewsTests(TestCase):
     def test_profile_list(self):
         self.client.login(username='bob', password='password')
         response = self.client.get('/profile/profile_list')
-        self.assertContains(response, '<a href="/profile/bob"><h1>bob</h1></a>')
-        self.assertContains(response, '<a href="/profile/alice"><h1>alice</h1></a>')
-        self.assertContains(response, '<a href="/profile/toby"><h1>toby</h1></a>')
+        self.assertContains(response,
+                            '<a href="/profile/bob"><h1>bob</h1></a>')
+        self.assertContains(response,
+                            '<a href="/profile/alice"><h1>alice</h1></a>')
+        self.assertContains(response,
+                            '<a href="/profile/toby"><h1>toby</h1></a>')
 
     def test_view_profile(self):
         self.client.login(username='bob', password='password')

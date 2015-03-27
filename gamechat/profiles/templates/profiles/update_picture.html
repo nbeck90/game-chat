@@ -2,7 +2,9 @@
 {% block content %}
 <form enctype="multipart/form-data" method="post" id='edit_photo'>{% csrf_token %}
     <div id='profile_pic_edit'>
+        {% if profile.picture %}
         <img src= '{{picture_url}}' max-height="300" max-width="300">
+        {% endif %}
         {{ form.as_p }}
         <input type="submit" value="Update" />
     </div>

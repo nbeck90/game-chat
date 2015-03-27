@@ -1,5 +1,6 @@
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect, get_object_or_404
+from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.http import JsonResponse
 from django.db import IntegrityError
@@ -38,12 +39,11 @@ def index(request, name):
         }
         return render(request, 'chat/index.html', context)
     else:
-        return redirect('/')
+        return redirect(reverse('four'))
 
 
 @csrf_exempt
 def create_room(request, main):
-    request.user.profile.own_room = True
     request.user.profile.save()
     # main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
@@ -64,23 +64,25 @@ def create_room(request, main):
 
 
 def chat_room(request, chat_room_id):
-    chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
-    # room = ChatRoom.objects.get(pk=chat_room_id)
-    user = Profile.objects.get(user=request.user)
-    user.chat_room_name = chatroom.name
-    user.save()
-    active = Profile.objects.filter(chat_room_name=chatroom.name)
-    context = {
-        'chatroom': chatroom,
-        'subs': active,
-        'rooms': chatroom.name,
-        # 'queues': QUEUES,
-    }
-    if request.user.profile:
-        chatroom.add_subscriber(request.user.profile)
-        QUEUES[chatroom.name][request.user.username] = queue.Queue()
-    return render(request, 'chat/chat_room.html', context)
-
+    try:
+        # chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
+        chatroom = ChatRoom.objects.get(pk=chat_room_id)
+        user = Profile.objects.get(user=request.user)
+        user.chat_room_name = chatroom.name
+        user.save()
+        active = Profile.objects.filter(chat_room_name=chatroom.name)
+        context = {
+            'chatroom': chatroom,
+            'subs': active,
+            'rooms': chatroom.name,
+            # 'queues': QUEUES,
+        }
+        if request.user.profile:
+            chatroom.add_subscriber(request.user.profile)
+            QUEUES[chatroom.name][request.user.username] = queue.Queue()
+        return render(request, 'chat/chat_room.html', context)
+    except ChatRoom.DoesNotExist:
+        return redirect(reverse('four'))
 
 @csrf_exempt
 def chat_add(request, chat_room_id):

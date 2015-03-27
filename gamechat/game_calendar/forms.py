@@ -8,10 +8,8 @@ class EventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['title', 'date', 'invitees']
-        
+
     def __init__(self, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         profile = Profile.objects.get(user=self.initial['user'])
         self.fields['invitees'].queryset = profile.get_friends()
-
-

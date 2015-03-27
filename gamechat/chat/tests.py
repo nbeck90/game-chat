@@ -1,9 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.test import Client
 from models import ChatRoom
 import factory
-from unittest import skip
 
 
 class UserFactory(factory.django.DjangoModelFactory):

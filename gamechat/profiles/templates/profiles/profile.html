@@ -2,10 +2,12 @@
 {% load staticfiles %}
 {% block content %}
 
+{% if profile.picture %}
 <div id='profile_pic'>
     <img src='{{profile.picture.url}}' max-height="30px" max-width="30px">
     <br />
 </div>
+{% endif %}
 <div id='profile'>
     <h1>Welcome, {{ profile }}!</h1>
 </div>
@@ -29,6 +31,9 @@
             {% for friend in profile.get_friends %}
                 <ul>
                     <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
+                    <a href="/profile/unfriend/{{friend.pk}}">
+                        <button>unfriend</button>
+                    </a>
                 </ul>
             {% endfor %}
         </ul>
@@ -79,6 +84,9 @@
                     {{ event.title }}
                     <a href="/profile/accept_invite/{{ event.pk }}">
                         <button>accept invite</button>
+                    </a>
+                    <a href="/profile/deny_invite/{{ event.pk }}">
+                        <button>deny invite</button>
                     </a>
                 </li>
             {% endfor %}

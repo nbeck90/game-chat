@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from django.test import Client
 from models import Event
 import factory
-from unittest import skip
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -44,15 +43,18 @@ class CalendarViewTests(TestCase):
         self.bob_profile = self.bob.profile
         self.alice = UserFactory.create(username='alice')
         self.alice_profile = self.alice.profile
-        self.bob_event = EventFactory.create(creator=self.bob_profile,
-                                              title='bob_event',
-                                              date='2015-03-01')
-        self.bob_event2 = EventFactory.create(creator=self.bob_profile,
-                                              title='bob_event2',
-                                              date='2015-03-02')
-        self.alice_event = EventFactory.create(creator=self.alice_profile,
-                                              title='alice_event',
-                                              date='2015-03-02')
+        self.bob_event = EventFactory.create(
+            creator=self.bob_profile,
+            title='bob_event',
+            date='2015-03-01')
+        self.bob_event2 = EventFactory.create(
+            creator=self.bob_profile,
+            title='bob_event2',
+            date='2015-03-02')
+        self.alice_event = EventFactory.create(
+            creator=self.alice_profile,
+            title='alice_event',
+            date='2015-03-02')
         self.client = Client()
 
     def test_events_are_returned_with_return_event(self):

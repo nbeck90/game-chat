@@ -3,7 +3,7 @@ from models import Profile
 from game_calendar.models import Event
 from django.contrib.auth.decorators import login_required
 from django.views.generic import UpdateView, ListView
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from chat.models import ChatRoom
 
 
@@ -21,7 +21,7 @@ def profile(request):
 def other_profile(request, slug):
     context = {}
     if request.user.username == slug:
-        return redirect("/profile/")
+        return redirect(reverse("profile"))
     try:
         profile = Profile.objects.get(slug=slug)
         context['profile'] = profile
@@ -29,7 +29,7 @@ def other_profile(request, slug):
         context['active_chats'] = ChatRoom.objects.filter(subscribers=profile)
         context['owned_chats'] = ChatRoom.objects.filter(owner=profile)
     except Profile.DoesNotExist:
-        return redirect('/')
+        return redirect(reverse('profile_list'))
     return render(request, 'profiles/other_profile.html', context)
 
 
@@ -45,7 +45,14 @@ def add_friend(request, pk):
     request.user.profile.friends.add(prof)
     request.user.profile.requesting_friend.remove(prof)
     prof.requested_friends.remove(prof)
-    return redirect('/profile/'+prof.user.username)
+    return redirect('/profile/' + prof.user.username)
+
+
+@login_required
+def unfriend(request, pk):
+    prof = Profile.objects.get(pk=pk)
+    request.user.profile.unfriending(prof)
+    return redirect('/profile/')
 
 
 @login_required
@@ -58,7 +65,7 @@ def block_asshole(request, pk):
 def unblock_asshole(request, pk):
     prof = Profile.objects.get(pk=pk)
     request.user.profile.blocking.remove(prof)
-    return redirect('/profile/'+prof.user.username)
+    return redirect('/profile/' + prof.user.username)
 
 
 @login_required
@@ -70,8 +77,15 @@ def accept_invitation(request, pk):
     return redirect('/calendar/')
 
 
-class update_picture(UpdateView):
+@login_required
+def deny_invitation(request, pk):
+    profile = request.user.profile
+    event = Event.objects.get(pk=pk)
+    event.invitees.remove(profile)
+    return redirect('/profile/')
 
+
+class update_picture(UpdateView):
     def get_context_data(self, *args, **kwargs):
         default = super(UpdateView, self).get_context_data(*args, **kwargs)
         profile = Profile.objects.get(pk=self.kwargs['pk'])
@@ -93,5 +107,4 @@ class update_picture(UpdateView):
 
 
 class ListProfiles(ListView):
-
     model = Profile

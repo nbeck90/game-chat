@@ -3,9 +3,11 @@
 <div id='profile'>
     <h1>{{ profile }}</h1>
 </div>
+{% if profile.picture %}
 <div id='profile_pic'>
     <img src='{{profile.picture.url}}' max-height="300" max-width="300">
 </div>
+{% endif %}
 <div id='profile_info'>
     {% if profile.chat_room %}
         <a href='{% url 'chat_room' profile.chat_room.pk %}'> Click here to go to {{ profile }}'s chat room! </a>
@@ -14,7 +16,7 @@
     <br>
     <a href="/profile/block/{{profile.pk}}"><button>Block User</button></a>
     {% endif %}
-    {% if user.profile in profile.friends.all %}
+    {% if user.profile in profile.get_friends %}
     	<h1>You two are friends! How nice.</h1>
     {% else %}
     	<a href="/profile/request_friend/{{profile.pk}}"><button>request friendship</button></a>
