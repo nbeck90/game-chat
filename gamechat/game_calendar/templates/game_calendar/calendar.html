@@ -11,8 +11,7 @@ $(document).ready(function() {
     $('#calendar').fullCalendar({
         events:"/calendar/event_feed/",
         eventClick: function(calEvent){
-            window.open("/calendar/event_detail/"+calEvent.pk, "event detail", "width=200, height=100, left=500");
-            return false;
+            window.location.replace("/calendar/event_detail/"+calEvent.pk);
             },
     })
 });

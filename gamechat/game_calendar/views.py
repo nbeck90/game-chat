@@ -2,7 +2,7 @@ from game_calendar.models import Event
 from game_calendar.forms import EventForm
 from profiles.models import Profile
 from django.shortcuts import render
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, DeleteView
 from django.db.models import Q
 
 
@@ -24,6 +24,10 @@ class EventCreate(CreateView):
 def event_detail(request, pk):
     event = Event.objects.get(pk=pk)
     return render(request, 'game_calendar/event_detail.html', {'event': event})
+
+
+class EventDelete(DeleteView):
+    model = Event
 
 
 def return_event(request):
