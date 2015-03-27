@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block content %}
 <h1>Created by {{ event.creator }}</h1>
+<h2>Title {{ event.title }} &nbsp; | &nbsp; {{ event.time }}</h2>
+<h2>Description: {{ event.description }}</h2>
 <h1>Attending:</h1>
 <ul>
 {% for attendee in event.attending.all %}
