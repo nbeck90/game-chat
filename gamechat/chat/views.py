@@ -43,7 +43,6 @@ def index(request, name):
 
 @csrf_exempt
 def create_room(request, main):
-    request.user.profile.own_room = True
     request.user.profile.save()
     # main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
