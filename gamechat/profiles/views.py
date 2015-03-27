@@ -49,6 +49,13 @@ def add_friend(request, pk):
 
 
 @login_required
+def unfriend(request, pk):
+    prof = Profile.objects.get(pk=pk)
+    request.user.profile.unfriending(prof)
+    return redirect('/profile/'+prof.user.username)
+
+
+@login_required
 def block_asshole(request, pk):
     request.user.profile.blocking.add(Profile.objects.get(pk=pk))
     return redirect('/profile/')

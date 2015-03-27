@@ -29,6 +29,9 @@
             {% for friend in profile.get_friends %}
                 <ul>
                     <a href="/profile/{{friend.user.username}}">{{ friend }}</a>
+                    <a href="/profile/unfriend/{{friend.pk}}">
+                        <button>unfriend</button>
+                    </a>
                 </ul>
             {% endfor %}
         </ul>
