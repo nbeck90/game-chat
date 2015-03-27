@@ -1,4 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
@@ -21,6 +22,7 @@ for chatroom in chatrooms:
 
 
 @csrf_exempt
+@login_required
 def index(request, name):
     """
     After picking a game this page will show all the chat rooms available
@@ -40,6 +42,7 @@ def index(request, name):
 
 
 @csrf_exempt
+@login_required
 def create_room(request, main):
     """
     Create a chat room for a game after going to the index page
@@ -62,6 +65,7 @@ def create_room(request, main):
     return redirect('/chat/' + main)
 
 
+@login_required
 def chat_room(request, chat_room_id):
     """
     After picking a chat room add the user to the subscriber and
