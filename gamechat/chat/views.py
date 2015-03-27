@@ -1,5 +1,5 @@
 from django.views.decorators.csrf import csrf_exempt
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.http import JsonResponse
@@ -14,11 +14,6 @@ list_of_games = ['ssb', 'wow', 'lol', 'cs', 'destiny',
                  'mine', 'hearth', 'dota', 'diablo',
                  'local']
 
-# def check_queues():
-#     chatrooms = ChatRoom.objects.all()
-#     for chatroom in chatrooms:
-#         if chatroom.main in list_of_games:
-#             QUEUES[chatroom.name] = {}
 
 chatrooms = ChatRoom.objects.all()
 for chatroom in chatrooms:
@@ -27,7 +22,9 @@ for chatroom in chatrooms:
 
 @csrf_exempt
 def index(request, name):
-    # name = request.path.rsplit('/', 1)[1]
+    """
+    After picking a game this page will show all the chat rooms available
+    """
     if name in list_of_games:
         chat_room = []
         for room in ChatRoom.objects.filter(main=name).all():
@@ -44,8 +41,10 @@ def index(request, name):
 
 @csrf_exempt
 def create_room(request, main):
+    """
+    Create a chat room for a game after going to the index page
+    """
     request.user.profile.save()
-    # main = request.path.rsplit('/', 2)[-1]
     name = request.POST.get('Enter a New Room Name')
     try:
         if name.strip():
@@ -64,8 +63,12 @@ def create_room(request, main):
 
 
 def chat_room(request, chat_room_id):
+    """
+    After picking a chat room add the user to the subscriber and
+
+    add the chatroom too profile
+    """
     try:
-        # chatroom = get_object_or_404(ChatRoom, pk=chat_room_id)
         chatroom = ChatRoom.objects.get(pk=chat_room_id)
         user = Profile.objects.get(user=request.user)
         user.chat_room_name = chatroom.name
@@ -75,7 +78,6 @@ def chat_room(request, chat_room_id):
             'chatroom': chatroom,
             'subs': active,
             'rooms': chatroom.name,
-            # 'queues': QUEUES,
         }
         if request.user.profile:
             chatroom.add_subscriber(request.user.profile)
@@ -84,8 +86,14 @@ def chat_room(request, chat_room_id):
     except ChatRoom.DoesNotExist:
         return redirect(reverse('four'))
 
+
 @csrf_exempt
 def chat_add(request, chat_room_id):
+    """
+    Contributing to chat, formatted to have the username.
+
+    Accept unicode in the chat
+    """
     message = request.POST.get('message')
     if message:
         chat_room = ChatRoom.objects.get(pk=chat_room_id).name
@@ -100,6 +108,9 @@ def chat_add(request, chat_room_id):
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
+    """
+    Receiving messages for a user
+    """
     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
     try:
         q = QUEUES[chat_room][request.user.username]
@@ -119,6 +130,9 @@ def chat_messages(request, chat_room_id):
 
 
 def delete_chatroom(request, chat_room_id):
+    """
+    Owner deletes the chatroom he has created
+    """
     request.user.profile.own_room = False
     request.user.profile.save()
     if request.user.profile == ChatRoom.objects.get(pk=chat_room_id).owner:
