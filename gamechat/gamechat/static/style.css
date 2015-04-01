@@ -246,8 +246,15 @@ CHAT CSS
     font-size: .4em;
     overflow: scroll;
     background-color: #fff;
-    height: 600px;
+    height: 400px;
     width: 300px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+.user_list a {
+    color: #555;
 }
 
 /***************

@@ -34,7 +34,7 @@ class ProfileCreationTests(TestCase):
 
     def test_new_profile_has_correct_defaults(self):
         assert self.bob_profile.user == self.bob
-        assert self.bob_profile.picture == 'photos/link.jpg'
+        assert self.bob_profile.picture == 'photos/frame.jpg'
         assert self.bob_profile.friends.all().count() == 0
         assert self.bob_profile.blocking.all().count() == 0
         assert self.bob_profile.requested_friends.all().count() == 0
