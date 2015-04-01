@@ -243,7 +243,18 @@ CHAT CSS
 
 .user_list {
     text-align: center;
-    font-size: .6em;
+    font-size: .4em;
+    overflow: scroll;
+    background-color: #fff;
+    height: 400px;
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+    border-radius: 10px;
+}
+
+.user_list a {
+    color: #555;
 }
 
 /***************

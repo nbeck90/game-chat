@@ -21,7 +21,7 @@ class Profile(models.Model):
                                                related_name='requesting_friend',
                                                null=True, blank=True)
     picture = models.ImageField(
-        upload_to='photos/', null=True, blank=True, default='photos/link.jpg')
+        upload_to='photos/', null=True, blank=True, default='photos/frame.jpg')
     slug = models.CharField(max_length=32, unique=True, blank=True)
     own_room = models.BooleanField(default=False)
     chat_room_name = models.CharField(max_length=64,
