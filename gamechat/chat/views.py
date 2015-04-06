@@ -147,6 +147,19 @@ def chat_messages(request, chat_room_id):
     return JsonResponse(data)
 
 
+@csrf_exempt
+def test_chat_messages(request, chat_room_id):
+    chat_room = ChatRoom.objects.get(pk=chat_room_id)
+    messages = []
+    for message in chat_room.message_set.order_by('date'):
+        messages.append(message.text)
+    data = {
+        'messages': messages,
+    }
+
+    return JsonResponse(data)
+
+
 def delete_chatroom(request, chat_room_id):
     """
     Owner deletes the chatroom he has created

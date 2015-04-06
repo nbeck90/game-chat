@@ -13,6 +13,8 @@ urlpatterns = patterns(
         name='chat_add'),
     url(r'^show/(?P<chat_room_id>\d+)/$', 'chat_messages',
         name='chat_messages'),
+    url(r'^test_show/(?P<chat_room_id>\d+)/$', 'test_chat_messages',
+        name='test_chat_messages'),
     url(r'^create/room/(?P<main>\w+)$', 'create_room',
         name='create_room'),
     url(r'^delete_room/(?P<chat_room_id>\d+)', 'delete_chatroom',

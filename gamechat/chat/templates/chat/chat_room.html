@@ -38,6 +38,26 @@
               });
             };
             longPoll();
+            var testLongPoll = function() {
+              return $.ajax({
+                type: "POST",
+                url: "/chat/test_show/{{chatroom.pk}}/",
+                async: true,
+                cache: false,
+                timeout: 1000000,
+                success: function(data) {
+                  if (data.messages.length > 0) {
+                    $('li').remove(".msg");
+                    for (i = 0; i < data.messages.length; i++) { 
+                        $("#test_messages").prepend($("<li class='msg'>" + data.messages[i] + "</li>"));
+                    }
+                  }
+                  return testLongPoll();
+                },
+                dataType: 'json'
+              });
+            };
+            testLongPoll();
         });
     </script>
 </head>
@@ -46,6 +66,10 @@
 <form id="newmessage">
         <input id="messageinput"></input>
 </form>
+<div id='test_chat'>
+    <ul id='test_messages'>
+    </ul>
+</div>
 <div id='chat_holder'>
     <div id='chat_window'>
         <ul id="messages">
