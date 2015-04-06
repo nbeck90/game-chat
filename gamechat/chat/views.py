@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 from django.utils.html import escape
 from django.http import JsonResponse
 from django.db import IntegrityError
-from chat.models import ChatRoom
+from chat.models import ChatRoom, Message
 from profiles.models import Profile
 from gamechat.urls import QUEUES
 from gevent import queue
@@ -99,6 +99,15 @@ def chat_add(request, chat_room_id):
     Accept unicode in the chat
     """
     message = request.POST.get('message')
+    room = ChatRoom.objects.get(pk=chat_room_id)
+    profile = Profile.objects.get(user=request.user)
+
+    Message.objects.create(
+            profile=profile,
+            text=message,
+            room=room,
+            )
+
     if message:
         chat_room = ChatRoom.objects.get(pk=chat_room_id).name
         for prof in QUEUES[chat_room]:

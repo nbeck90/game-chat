@@ -1,7 +1,8 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from models import ChatRoom
+from models import ChatRoom, Message
 import factory
+from unittest import skip
 
 
 class UserFactory(factory.django.DjangoModelFactory):
@@ -25,6 +26,7 @@ class ChatRoomFactory(factory.django.DjangoModelFactory):
 
 
 # Create your tests here.
+@skip('lkjf')
 class CreateChatTests(TestCase):
 
     def setUp(self):
@@ -53,3 +55,11 @@ class ChatRoomViewsTests(TestCase):
         self.bob = UserFactory.create()
         self.bob_profile = self.bob.profile
         self.bobs_chatroom = ChatRoomFactory.create(owner=self.bob_profile)
+
+    def test_Message(self):
+        Message.objects.create(
+            profile=self.bob_profile,
+            room=self.bobs_chatroom,
+            text=u"hello!")
+        m1 = Message.objects.get(profile=self.bob_profile)
+        print m1
