@@ -151,8 +151,18 @@ def chat_messages(request, chat_room_id):
 def test_chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     messages = []
+
     for message in chat_room.message_set.order_by('date'):
-        messages.append(message.text)
+        user = message.profile.user
+        if request.user.profile.blocking.filter(user__username=user):
+            msg = '{}: {}'.format(user.username, 'blocked')
+        else:
+            msg = '{}: {}'.format(
+                user.username,
+                message.text
+                )
+        messages.append(msg)
+
     data = {
         'messages': messages,
     }

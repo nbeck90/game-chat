@@ -21,23 +21,6 @@
                 $("#messageinput").focus();
                 e.preventDefault();
             });
-            var longPoll = function() {
-              return $.ajax({
-                type: "POST",
-                url: "/chat/show/{{chatroom.pk}}/",
-                async: true,
-                cache: false,
-                timeout: 1000000,
-                success: function(data) {
-                  if (data.messages.length > 0) {
-                      $("#messages").prepend($("<li>" + data.messages + "</li>"))
-                  }
-                  return longPoll();
-                },
-                dataType: 'json'
-              });
-            };
-            longPoll();
             var testLongPoll = function() {
               return $.ajax({
                 type: "POST",
@@ -71,13 +54,6 @@
     </ul>
 </div>
 <div id='chat_holder'>
-    <div id='chat_window'>
-        <ul id="messages">
-            {% for message in messages %}
-            <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    </div>
     <div id='room_info'>
         </button>
         <h3>Subscribers for this room:</h3>

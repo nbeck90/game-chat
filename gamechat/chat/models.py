@@ -31,7 +31,7 @@ class ChatRoom(models.Model):
         self.active_messages.appendleft(message)
 
     def trunctate_message_set(self):
-        while self.message_set.all().count() >= 20:
+        while self.message_set.all().count() >= 40:
             self.message_set.order_by('date')[0].delete()
 
 
