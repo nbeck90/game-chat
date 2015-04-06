@@ -25,10 +25,14 @@ class ChatRoom(models.Model):
         self.subscribers.add(profile)
 
     def add_message(self, message):
-        while self.active_messages >= 30:
+        while len(self.active_messages) >= 30:
             self.active_messages.pop()
 
         self.active_messages.appendleft(message)
+
+    def trunctate_message_set(self):
+        while self.message_set.all().count() >= 20:
+            self.message_set.order_by('date')[0].delete()
 
 
 class Message(models.Model):

@@ -102,11 +102,16 @@ def chat_add(request, chat_room_id):
     room = ChatRoom.objects.get(pk=chat_room_id)
     profile = Profile.objects.get(user=request.user)
 
-    Message.objects.create(
+    msg = Message.objects.create(
             profile=profile,
             text=message,
             room=room,
             )
+
+    #import pdb;pdb.set_trace()
+
+    room.trunctate_message_set()
+    print room.message_set.order_by('-date')
 
     if message:
         chat_room = ChatRoom.objects.get(pk=chat_room_id).name
