@@ -41,6 +41,26 @@
               });
             };
             testLongPoll();
+            var getSubscribers = function() {
+              return $.ajax({
+                type: "GET",
+                url: "/chat/get_subscribers/{{chatroom.pk}}/",
+                async: true,
+                cache: false,
+                timeout: 1000000,
+                success: function(data) {
+                  if (data.subscribers.length > 0) {
+                    $('li').remove(".sub");
+                    for (i = 0; i < data.subscribers.length; i++) { 
+                        $("#test_subscribers").prepend($("<li class='sub'>" + data.subscribers[i] + "</li>"));
+                    }
+                  }
+                  return testLongPoll();
+                },
+                dataType: 'json'
+              });
+            };
+            getSubscribers();
         });
     </script>
 </head>
@@ -53,13 +73,15 @@
     <ul id='test_messages'>
     </ul>
 </div>
+<div id='test_subscribers_list'>
+
+</div>
 <div id='chat_holder'>
     <div id='room_info'>
         </button>
         <h3>Subscribers for this room:</h3>
-        {% for sub in subs %}
-        <a href="/profile/{{ sub }}">{{sub}}</a></p>
-        {% endfor %}
+        <ul id='test_subscribers'>
+        </ul>
         <br>
         </body>
         {% if user.profile == chatroom.owner %}

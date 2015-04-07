@@ -170,6 +170,22 @@ def test_chat_messages(request, chat_room_id):
     return JsonResponse(data)
 
 
+@csrf_exempt
+def get_subscribers(request, chat_room_id):
+    chat_room = ChatRoom.objects.get(pk=chat_room_id)
+    subscribers = []
+
+    for subscriber in chat_room.subscribers.all():
+        link = '<a href="/profile/'+str(subscriber)+'">'+str(subscriber)+'</a>'
+        subscribers.append(link)
+
+    data = {
+        'subscribers': subscribers,
+    }
+
+    return JsonResponse(data)
+
+
 def delete_chatroom(request, chat_room_id):
     """
     Owner deletes the chatroom he has created

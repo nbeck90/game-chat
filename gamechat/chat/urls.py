@@ -15,6 +15,8 @@ urlpatterns = patterns(
         name='chat_messages'),
     url(r'^test_show/(?P<chat_room_id>\d+)/$', 'test_chat_messages',
         name='test_chat_messages'),
+    url(r'^get_subscribers/(?P<chat_room_id>\d+)/$', 'get_subscribers',
+        name='get_subscribers'),
     url(r'^create/room/(?P<main>\w+)$', 'create_room',
         name='create_room'),
     url(r'^delete_room/(?P<chat_room_id>\d+)', 'delete_chatroom',
