@@ -92,6 +92,15 @@ def chat_room(request, chat_room_id):
 
 
 @csrf_exempt
+def leave_chat_room(request, chat_room_id):
+    # import pdb; pdb.set_trace()
+    chatroom = ChatRoom.objects.get(pk=chat_room_id)
+    profile = Profile.objects.get(user=request.user)
+    chatroom.remove_subscriber(profile)
+    return JsonResponse({'data': True})
+
+
+@csrf_exempt
 def chat_add(request, chat_room_id):
     """
     Contributing to chat, formatted to have the username.
@@ -100,55 +109,52 @@ def chat_add(request, chat_room_id):
     """
     message = request.POST.get('message')
     room = ChatRoom.objects.get(pk=chat_room_id)
-    profile = Profile.objects.get(user=request.user)
+    if message:
+        profile = Profile.objects.get(user=request.user)
 
-    msg = Message.objects.create(
+        Message.objects.create(
             profile=profile,
             text=message,
             room=room,
             )
 
-    #import pdb;pdb.set_trace()
-
     room.trunctate_message_set()
-    print room.message_set.order_by('-date')
 
-    if message:
-        chat_room = ChatRoom.objects.get(pk=chat_room_id).name
-        for prof in QUEUES[chat_room]:
-            message = unicode(message)
-            message = message.encode('utf-8')
-            msg = "{}: {}".format(request.user.username, message)
-            QUEUES[chat_room][prof].put_nowait(msg)
+    # if message:
+    #     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
+    #     for prof in QUEUES[chat_room]:
+    #         message = unicode(message)
+    #         message = message.encode('utf-8')
+    #         msg = "{}: {}".format(request.user.username, message)
+    #         QUEUES[chat_room][prof].put_nowait(msg)
 
-    return JsonResponse({'message': message})
+    return JsonResponse({'data': True})
+
+# @csrf_exempt
+# def chat_messages(request, chat_room_id):
+#     """
+#     Receiving messages for a user
+#     """
+#     chat_room = ChatRoom.objects.get(pk=chat_room_id).name
+#     try:
+#         q = QUEUES[chat_room][request.user.username]
+#         msg = q.get(timeout=.05)
+#         msg = escape(msg)
+#         name = msg.split()[0][:-1]
+#         if request.user.profile.blocking.filter(user__username=name):
+#             msg = ["{}: {}".format(name, 'blocked')]
+#     except queue.Empty:
+#         msg = []
+
+#     data = {
+#         'messages': msg,
+#     }
+
+#     return JsonResponse(data)
 
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
-    """
-    Receiving messages for a user
-    """
-    chat_room = ChatRoom.objects.get(pk=chat_room_id).name
-    try:
-        q = QUEUES[chat_room][request.user.username]
-        msg = q.get(timeout=.05)
-        msg = escape(msg)
-        name = msg.split()[0][:-1]
-        if request.user.profile.blocking.filter(user__username=name):
-            msg = ["{}: {}".format(name, 'blocked')]
-    except queue.Empty:
-        msg = []
-
-    data = {
-        'messages': msg,
-    }
-
-    return JsonResponse(data)
-
-
-@csrf_exempt
-def test_chat_messages(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     messages = []
 

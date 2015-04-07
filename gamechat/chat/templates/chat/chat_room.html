@@ -9,6 +9,18 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8">
         $(document).ready(function() {
+            $(window).unload(function() {
+                return $.ajax({
+                    type: "POST",
+                    url: "/chat/remove_subscriber/{{chatroom.pk}}/",
+                    async: true,
+                    cache: false,
+                    timeout: 1000000,
+                    success: function(data) {
+                    },
+                    dataType: 'json'
+                  });
+            });
             $('#newmessage').submit(function(e) {
                 var message = $("#messageinput").val();
                 $.ajax({
@@ -21,10 +33,10 @@
                 $("#messageinput").focus();
                 e.preventDefault();
             });
-            var testLongPoll = function() {
+            var longPoll = function() {
               return $.ajax({
                 type: "POST",
-                url: "/chat/test_show/{{chatroom.pk}}/",
+                url: "/chat/show/{{chatroom.pk}}/",
                 async: true,
                 cache: false,
                 timeout: 1000000,
@@ -35,12 +47,12 @@
                         $("#test_messages").prepend($("<li class='msg'>" + data.messages[i] + "</li>"));
                     }
                   }
-                  return testLongPoll();
+                  return longPoll();
                 },
                 dataType: 'json'
               });
             };
-            testLongPoll();
+            longPoll();
             var getSubscribers = function() {
               return $.ajax({
                 type: "GET",
@@ -55,7 +67,7 @@
                         $("#test_subscribers").prepend($("<li class='sub'>" + data.subscribers[i] + "</li>"));
                     }
                   }
-                  return testLongPoll();
+                  return getSubscribers();
                 },
                 dataType: 'json'
               });
