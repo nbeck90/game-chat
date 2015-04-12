@@ -8,17 +8,11 @@ from django.db import IntegrityError
 from chat.models import ChatRoom, Message
 from profiles.models import Profile
 from gamechat.urls import QUEUES
-from gevent import queue
 
 
 list_of_games = ['ssb', 'wow', 'lol', 'cs', 'destiny',
                  'mine', 'hearth', 'dota', 'diablo',
                  'local']
-
-
-chatrooms = ChatRoom.objects.all()
-for chatroom in chatrooms:
-    QUEUES[chatroom.name] = {}
 
 
 @csrf_exempt
@@ -83,9 +77,6 @@ def chat_room(request, chat_room_id):
             'subs': active,
             'rooms': chatroom.name,
         }
-        if request.user.profile:
-            chatroom.add_subscriber(request.user.profile)
-            QUEUES[chatroom.name][request.user.username] = queue.Queue()
         return render(request, 'chat/chat_room.html', context)
     except ChatRoom.DoesNotExist:
         return redirect(reverse('four'))
@@ -155,6 +146,7 @@ def chat_add(request, chat_room_id):
 
 @csrf_exempt
 def chat_messages(request, chat_room_id):
+
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
     messages = []
 
@@ -179,6 +171,7 @@ def chat_messages(request, chat_room_id):
 @csrf_exempt
 def get_subscribers(request, chat_room_id):
     chat_room = ChatRoom.objects.get(pk=chat_room_id)
+    chat_room.add_subscriber(request.user.profile)
     subscribers = []
 
     for subscriber in chat_room.subscribers.all():
@@ -189,6 +182,7 @@ def get_subscribers(request, chat_room_id):
         'subscribers': subscribers,
     }
 
+    print subscribers
     return JsonResponse(data)
 
 

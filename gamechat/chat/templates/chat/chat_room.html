@@ -13,11 +13,9 @@
                 return $.ajax({
                     type: "POST",
                     url: "/chat/remove_subscriber/{{chatroom.pk}}/",
-                    async: true,
+                    async: false,
                     cache: false,
                     timeout: 1000000,
-                    success: function(data) {
-                    },
                     dataType: 'json'
                   });
             });
@@ -44,16 +42,16 @@
                   if (data.messages.length > 0) {
                     $('li').remove(".msg");
                     for (i = 0; i < data.messages.length; i++) { 
-                        $("#test_messages").prepend($("<li class='msg'>" + data.messages[i] + "</li>"));
+                        $("#messages").prepend($("<li class='msg'>" + data.messages[i] + "</li>"));
                     }
                   }
-                  return longPoll();
+                  return longPoll()
                 },
                 dataType: 'json'
               });
             };
             longPoll();
-            var getSubscribers = function() {
+            function getSubscribers() {
               return $.ajax({
                 type: "GET",
                 url: "/chat/get_subscribers/{{chatroom.pk}}/",
@@ -64,15 +62,14 @@
                   if (data.subscribers.length > 0) {
                     $('li').remove(".sub");
                     for (i = 0; i < data.subscribers.length; i++) { 
-                        $("#test_subscribers").prepend($("<li class='sub'>" + data.subscribers[i] + "</li>"));
+                        $("#subscribers").prepend($("<li class='sub'>" + data.subscribers[i] + "</li>"));
                     }
                   }
-                  return getSubscribers();
                 },
                 dataType: 'json'
               });
             };
-            getSubscribers();
+            setInterval(getSubscribers, 500);
         });
     </script>
 </head>
@@ -82,17 +79,15 @@
         <input id="messageinput"></input>
 </form>
 <div id='test_chat'>
-    <ul id='test_messages'>
+    <ul id='messages'>
     </ul>
 </div>
-<div id='test_subscribers_list'>
 
-</div>
 <div id='chat_holder'>
     <div id='room_info'>
         </button>
         <h3>Subscribers for this room:</h3>
-        <ul id='test_subscribers'>
+        <ul id='subscribers'>
         </ul>
         <br>
         </body>

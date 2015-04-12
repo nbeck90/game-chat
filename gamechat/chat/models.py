@@ -14,10 +14,6 @@ class ChatRoom(models.Model):
                                  related_name='chat_room',
                                  blank=True, null=True)
 
-    from collections import deque
-
-    active_messages = deque()
-
     def __unicode__(self):
         return self.name
 
@@ -26,12 +22,8 @@ class ChatRoom(models.Model):
 
     def remove_subscriber(self, profile):
         self.subscribers.remove(profile)
-
-    def add_message(self, message):
-        while len(self.active_messages) >= 30:
-            self.active_messages.pop()
-
-        self.active_messages.appendleft(message)
+        print "!!!!!!!!!!!!"
+        print self.subscribers.all()
 
     def trunctate_message_set(self):
         while self.message_set.all().count() >= 20:
