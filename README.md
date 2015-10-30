@@ -1,2 +1,2 @@
 # game-chat
-A project to find gamers to join your party weather you're into board games/local or online games. Provide a friending feature and a calender to set up events so all your raids can happen on time!
+A project to find gamers to join your party. Whether you're into board games, local, or online games, this is the place for you. Friending and scheduled event features in place so all your raids can happen on time!
